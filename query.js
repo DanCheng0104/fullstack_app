@@ -1,10 +1,10 @@
 const promise = require('bluebird');
-const config = require('./config');
+//const config = require('./config');
 const options = {
   // Initialization Options
   promiseLib: promise
 };
-console.log(config.connectionString);
+//console.log(config.connectionString);
 
 
 const pgp = require('pg-promise')(options);
