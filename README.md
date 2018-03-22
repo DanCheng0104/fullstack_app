@@ -10,11 +10,11 @@ in order to run this in your local, you will need to have the following software
 ```
 git clone https://github.com/DanCheng0104/fullstack_app.git
 ```
-3. cd to fullstack_app and run this command (install package.json on the server side)
+3. cd to ./fullstack_app and run this command (install package.json on the server side)
 ```
 npm install
 ```
-5. cd to client folder and run this command (install package.json on the client side )
+5. cd to ./client folder and run this command (install package.json on the client side )
 ```
 npm install
 ```
