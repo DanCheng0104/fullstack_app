@@ -10,7 +10,8 @@ const options = {
 const pgp = require('pg-promise')(options);
 pgp.pg.defaults.poolSize = 20;
 //var db = pgp(config.connectionString);
-const db = pgp(process.env.DATABASE_URL);
+const connectionString = `${process.env.DATABASE_URL}?ssl=true`;
+const db = pgp(connectionString);
 
 // add query functions
 function getAllPuppies(req, res, next) {
