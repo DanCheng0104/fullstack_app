@@ -1,21 +1,25 @@
 const promise = require('bluebird');
-//const config = require('./config');
+const production = true;
 const options = {
-  // Initialization Options
-  promiseLib: promise
-};
-//console.log(config.connectionString);
-
-
+    // Initialization Options
+    promiseLib: promise
+  };
 const pgp = require('pg-promise')(options);
 pgp.pg.defaults.poolSize = 20;
-//var db = pgp(config.connectionString);
-const connectionString = `${process.env.DATABASE_URL}?ssl=true`;
-const db = pgp(connectionString);
+
+if (production){
+    const connectionString = `${process.env.DATABASE_URL}?ssl=true`;
+    const db = pgp(connectionString);
+}
+else{
+    const config = require('./config');
+    var db = pgp(config.connectionString);
+}
+
 
 // add query functions
 function getAllPuppies(req, res, next) {
-    db.any('select ST_AsGeoJSON(geom) from nb_4326 limit 10;')
+    db.any('select name from nb_4326 limit 10;')
       .then(function (data) {
         res.status(200)
           .json({
