@@ -15,7 +15,7 @@ const db = pgp(connectionString);
 
 // add query functions
 function getAllPuppies(req, res, next) {
-    db.any('select ST_AsGeoJSON(shape) from nb_4326 limit 10;')
+    db.any('select ST_AsGeoJSON(geom) from nb_4326 limit 10;')
       .then(function (data) {
         res.status(200)
           .json({
