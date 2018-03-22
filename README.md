@@ -8,7 +8,7 @@ in order to run this in your local, you will need to have the following software
 1. cd to your local where you want to copy the repo
 2. running this command
 ```
-git clone ...git
+git clone https://github.com/DanCheng0104/fullstack_app.git
 ```
 3. cd to fullstack_app and run this command (install package.json on the server side)
 ```
@@ -52,7 +52,7 @@ create extension postgis
 shp2pgsql -s 4326 "shapefile path in your local" tablename | psql -h host -d database -U username
 ```
 
-##Deployment
+## Deployment
 
 remember to comment out local connections in query.js in order to get the app connected to heroku db
 1. heroku login (heroku create if not remote heroku repo is created)
