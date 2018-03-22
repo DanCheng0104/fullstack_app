@@ -8,7 +8,7 @@ class App extends Component {
     this.getNames();
   }
   getNames = () => {
-    fetch('api/puppies')
+    fetch('api/nbs')
       .then(res => res.json())
       .then(names => this.setState({ names:names.data }));
   }

@@ -6,6 +6,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-router.get('/api/puppies', db.getAllPuppies);
+router.get('/api/nbs', db.getAllNbs);
 
 module.exports = router;
