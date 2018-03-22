@@ -26,7 +26,7 @@ function getAllNbs(req, res, next) {
           .json({
             status: 'success',
             data: data,
-            message: 'Retrieved ALL puppies'
+            message: 'Retrieved ALL nbs'
           });
       })
       .catch(function (err) {
