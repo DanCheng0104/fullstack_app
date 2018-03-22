@@ -2,7 +2,7 @@
 This project is to display water data in an interactive map. This app is built with react as frontend, nodejs+express+postgres as backend.
 
 ## Getting Started
-in order to run this in your local, you will need to have the following software installed in your local machine: nodejs, postgres with postgis extension
+in order to run this in your local, you will need to have the following software installed in your local machine: nodejs, postgres with postgis extension.
 
 ### Setting up in your local
 1. cd to your local where you want to copy the repo
