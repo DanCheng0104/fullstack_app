@@ -1,18 +1,20 @@
 const promise = require('bluebird');
 const config = require('./config');
-var options = {
+const options = {
   // Initialization Options
   promiseLib: promise
 };
 console.log(config.connectionString);
 
 
-var pgp = require('pg-promise')(options);
-var db = pgp(config.connectionString);
+const pgp = require('pg-promise')(options);
+pgp.pg.defaults.poolSize = 20;
+//var db = pgp(config.connectionString);
+const db = pgp(process.env.DATABASE_URL);
 
 // add query functions
 function getAllPuppies(req, res, next) {
-    db.any('select ST_AsGeoJSON(shape) from nb where year = 2011 and usetype = \'all\' limit 10;')
+    db.any('select ST_AsGeoJSON(shape) from nb_4326 limit 10;')
       .then(function (data) {
         res.status(200)
           .json({
