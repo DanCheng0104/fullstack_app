@@ -1,17 +1,27 @@
 const promise = require('bluebird');
-//const config = require('./config');
+
+//prod
 const options = {
-  // Initialization Options
-  promiseLib: promise
+    // Initialization Options
+    promiseLib: promise
 };
-//console.log(config.connectionString);
-
-
 const pgp = require('pg-promise')(options);
 pgp.pg.defaults.poolSize = 20;
-//var db = pgp(config.connectionString);
 const connectionString = `${process.env.DATABASE_URL}?ssl=true`;
 const db = pgp(connectionString);
+//local
+// const pgp = require('pg-promise')(options);
+// const config = require('./config');
+// const options = {
+//   // Initialization Options
+//   promiseLib: promise
+// };
+// const db = pgp(config.connectionString);
+
+
+
+
+
 
 // add query functions
 function getAllPuppies(req, res, next) {
