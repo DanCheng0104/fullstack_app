@@ -1,0 +1,38 @@
+#root{
+    display: grid;
+    grid-auto-rows: 1fr 10fr 20px;
+    grid-template-columns: auto;
+    height: 100vh;
+  }
+
+.nav-menu{
+grid-row:1; 
+}
+
+.mapboxgl-map{
+    grid-row:2; 
+    display: grid;
+    grid-template-columns: repeat(18,1fr);
+    grid-template-rows: repeat(18,1fr);
+}
+
+   /* Header.css */
+.nav-menu a {
+    font-family: Overpass,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100%;
+    font-weight: 600;
+    float: left;
+    display: block;
+    color: #000;
+    text-align: center;
+    padding: 20px;
+    text-decoration: none;
+    border-bottom: 2px solid #ffffff;
+  }
+  
+  .nav-menu a:hover:not(.active) {
+    border-bottom: 2px solid #002874;	
+    color: #002874;	
+  }
+  
