@@ -32,10 +32,27 @@ function getAllNbs(req, res, next) {
       .catch(function (err) {
         return next(err);
       });
-  }
+}
+
+function getAllData(req, res, next) {
+  db.any('select id,usetype,usage_int,sqft,usage_med,usage_med_sqft,year,data_load_period_id,name from water_usage_bld_nb_frontend where data_load_period_id=2;')
+    .then(function (data) {
+      res.status(200)
+        .json({
+          status: 'success',
+          data: data,
+          message: 'Retrieved ALL data'
+        });
+    })
+    .catch(function (err) {
+      return next(err);
+    });
+}
+
 
 module.exports = {
-    getAllNbs: getAllNbs
+    getAllNbs: getAllNbs,
+    getAllData: getAllData
 //   getSinglePuppy: getSinglePuppy,
 //   createPuppy: createPuppy,
 //   updatePuppy: updatePuppy,

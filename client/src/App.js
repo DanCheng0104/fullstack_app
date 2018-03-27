@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from './components/Header';
 import Map from './components/Map';
+import Footer from './components/Footer';
 
 class App extends Component {
   // state = { names: []}
@@ -17,7 +18,8 @@ class App extends Component {
     return (
       <React.Fragment>
         <Header/>  
-        <Map/>      
+        <Map/>    
+        <Footer/>  
       </React.Fragment>
       // <div>re</div>
     );
