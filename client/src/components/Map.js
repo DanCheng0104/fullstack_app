@@ -47,20 +47,7 @@ class Map extends React.Component {
     
 
     componentWillMount(){
-        this.getAllUsage().then(data => {
-            let results = {};
-            results['type'] = "FeatureCollection";
-            results["features"] = [];
-            data.data.forEach(geo=>{
-                let feature = {};
-                feature.type = "Feature";
-                //need to convert json string to int, otherwise the legend wont work
-                feature.properties = {"name":geo.name,"id":geo.id,"usage":parseInt(geo.usage_int),"sqft":parseInt(geo.sqft),"usage_med":parseInt(geo.usage_med),"usage_med_sqft":parseInt(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
-                feature.geometry = JSON.parse(geo.st_asgeojson);
-                results.features.push(feature);
-            })
-            this.setState({ geos:results })
-        });
+
     }
 
     componentDidMount() {
@@ -75,23 +62,37 @@ class Map extends React.Component {
           });
 
         this.map.on('load',()=>{
-            console.log(this.state.geos);
-            this.map.addSource("base_nb",{
-              "type": "geojson",
-              "data": this.state.geos
-          });
+            this.getAllUsage().then(data => {
+                let results = {};
+                results['type'] = "FeatureCollection";
+                results["features"] = [];
+                data.data.forEach(geo=>{
+                    let feature = {};
+                    feature.type = "Feature";
+                    //need to convert json string to int, otherwise the legend wont work
+                    feature.properties = {"name":geo.name,"id":geo.id,"usage":parseInt(geo.usage_int),"sqft":parseInt(geo.sqft),"usage_med":parseInt(geo.usage_med),"usage_med_sqft":parseInt(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
+                    feature.geometry = JSON.parse(geo.st_asgeojson);
+                    results.features.push(feature);
+                })
+                this.setState({ geos:results });
+                this.map.addSource("base_nb",{
+                    "type": "geojson",
+                    "data": this.state.geos
+                  });
+      
+                  this.map.addLayer({
+                  "id": "nb-boundary",
+                  "type": "fill",
+                  "source": "base_nb",
+                  "paint": {
+                      "fill-outline-color": "#e1cdb5",
+                      'fill-opacity': 1
+                  },
+                   "filter":  ["all",['==','year',this.state.year],['!=','usage',-9999]] 
+                });    
+                  this.setFill(this.state.year);
+            });
 
-            this.map.addLayer({
-            "id": "nb-boundary",
-            "type": "fill",
-            "source": "base_nb",
-            "paint": {
-                "fill-outline-color": "#e1cdb5",
-                'fill-opacity': 1
-            },
-             "filter":  ["all",['==','year',this.state.year],['!=','usage',-9999]] 
-          });    
-            this.setFill(this.state.year);
 
             this.map.on('click',(e)=>{
                 const features = this.map.queryRenderedFeatures(e.point,{layers:['nb-boundary']});
