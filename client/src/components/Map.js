@@ -89,7 +89,7 @@ class Map extends React.Component {
                     // const year = features[0].properties.year;
                     const id = features[0].properties.id;
                     const usetypes = ["commercial","institutional","other","industrial","res","mixed_use"];
-                    const years = [2011,2012,2013,2014,2015,2016];
+                    const years = [2011,2012,2013,2014,2015];
                     let tempData = {"commercial":[],"institutional":[],"other":[],"industrial":[],"res":[],"mixed_use":[]};
                     let colors={"commercial":'#7fc97f',"institutional":'#beaed4',"other":'#fdc086',"industrial":'#ffff99',"res":'#386cb0',"mixed_use":'#f0027f'};
                     usetypes.forEach((usetype)=>{
