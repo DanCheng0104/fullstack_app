@@ -23,7 +23,7 @@ class Legend extends Component {
         <div className="legend">
             <div className="arrow">
                     <span class="glyphicon glyphicon-chevron-left"  onClick={(e)=>{this.handlerChange(e,this.props.year,"left")}}></span>
-                    {this.props.year}
+                    {this.props.year} (HCF)
                     <span class="glyphicon glyphicon-chevron-right" onClick={(e)=>{this.handlerChange(e,this.props.year,"right")}}></span>
             </div>
             <div className = "LegendItems">
