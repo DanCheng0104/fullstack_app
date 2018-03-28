@@ -47,11 +47,24 @@ class Map extends React.Component {
     
 
     componentWillMount(){
-
+        this.getAllUsage().then(data => {
+            let results = {};
+            results['type'] = "FeatureCollection";
+            results["features"] = [];
+            data.data.forEach(geo=>{
+                let feature = {};
+                feature.type = "Feature";
+                //need to convert json string to int, otherwise the legend wont work
+                feature.properties = {"name":geo.name,"id":geo.id,"usage":parseInt(geo.usage_int),"sqft":parseInt(geo.sqft),"usage_med":parseInt(geo.usage_med),"usage_med_sqft":parseInt(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
+                feature.geometry = JSON.parse(geo.st_asgeojson);
+                results.features.push(feature);
+            })
+            this.setState({ geos:results })
+        });
     }
 
     componentDidMount() {
-        this.getAllUsage();
+
         this.getAllData();
         this.map = new mapboxgl.Map({
             container: this.mapContainer,
@@ -131,22 +144,22 @@ class Map extends React.Component {
       }
 
     getAllUsage=()=>{
-        fetch('api/nbs')
+        return fetch('api/nbs')
         .then(res => res.json())
-        .then(data => {
-            let results = {};
-            results['type'] = "FeatureCollection";
-            results["features"] = [];
-            data.data.forEach(geo=>{
-                let feature = {};
-                feature.type = "Feature";
-                //need to convert json string to int, otherwise the legend wont work
-                feature.properties = {"name":geo.name,"id":geo.id,"usage":parseInt(geo.usage_int),"sqft":parseInt(geo.sqft),"usage_med":parseInt(geo.usage_med),"usage_med_sqft":parseInt(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
-                feature.geometry = JSON.parse(geo.st_asgeojson);
-                results.features.push(feature);
-            })
-            this.setState({ geos:results })
-        });
+        // .then(data => {
+        //     let results = {};
+        //     results['type'] = "FeatureCollection";
+        //     results["features"] = [];
+        //     data.data.forEach(geo=>{
+        //         let feature = {};
+        //         feature.type = "Feature";
+        //         //need to convert json string to int, otherwise the legend wont work
+        //         feature.properties = {"name":geo.name,"id":geo.id,"usage":parseInt(geo.usage_int),"sqft":parseInt(geo.sqft),"usage_med":parseInt(geo.usage_med),"usage_med_sqft":parseInt(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
+        //         feature.geometry = JSON.parse(geo.st_asgeojson);
+        //         results.features.push(feature);
+        //     })
+        //     this.setState({ geos:results })
+        // });
     }
 
     getAllData=()=>{
