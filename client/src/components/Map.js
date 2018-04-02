@@ -6,12 +6,17 @@ import {color} from '../palette.json';
 import Legend from './Legend';
 import PanelPart from './PanelPart';
 import Bar from './Bar';
+<<<<<<< HEAD
+=======
+import Loading from './Loading';
+>>>>>>> 344f67e678368b44fb634dab254dc135d12c4cd8
 mapboxgl.accessToken =  'pk.eyJ1IjoiZGNoZW5nMDEwNCIsImEiOiJjaXE0MDh2MHQwMG9xZnhtNGg0azVybGxtIn0.7jdNnbpd8kQI3qO1HfSnUg';
 
 class Map extends React.Component {
     // mapContainer = React.createRef();
     panelContainer = React.createRef();
     state = {
+        loading:true,
         geos: {},
         year : 2014,
         value:'usage',
@@ -30,8 +35,13 @@ class Map extends React.Component {
         },
         responsive: true
         },
+<<<<<<< HEAD
         values:['Total', 'Median','Median Per sqft'],
         usetypes:['All','Commercial','Institutional','Mixed Use','Other','Residential']
+=======
+        values:{'Total':'usage', 'Median':'usage_med','Median Per sqft':'usage_med_sqft'},
+        usetypes:{'All':'all','Commercial':'commercial','Institutional':'institutional','Mixed Use':'mixed_use','Other':'other','Residential':'res'}
+>>>>>>> 344f67e678368b44fb634dab254dc135d12c4cd8
     };
 
     updateYear =(year)=>{
@@ -42,6 +52,7 @@ class Map extends React.Component {
         this.setState({barDisplay:display});
     }
     updateValue =(value) =>{
+<<<<<<< HEAD
         console.log(value);
     }
     updateUsetype =(value) =>{
@@ -49,6 +60,12 @@ class Map extends React.Component {
     }
     componentWillMount(){
 
+=======
+        this.setState({value:this.state.values[value]});
+    }
+    updateUsetype =(value) =>{
+        this.setState({usetype:this.state.usetypes[value]});   
+>>>>>>> 344f67e678368b44fb634dab254dc135d12c4cd8
     }
 
     componentDidMount() {
@@ -91,7 +108,12 @@ class Map extends React.Component {
                   },
                    "filter":  ["all",['==','year',this.state.year],['!=',this.state.value,-9999],['==','usetype',this.state.usetype]] 
                 });    
+<<<<<<< HEAD
                   this.setFill();
+=======
+                this.setFill();
+                this.setState({loading:false});
+>>>>>>> 344f67e678368b44fb634dab254dc135d12c4cd8
             });
 
 
@@ -134,7 +156,11 @@ class Map extends React.Component {
     }
 
     componentDidUpdate() {
+<<<<<<< HEAD
         const filter = ["all",['==','year',this.state.year],['!=',this.state.value,-9999],['==','usetype',this.state.usetype]]     
+=======
+        const filter = ["all",['==','year',this.state.year],['!=',this.state.value,-9999],['!=',this.state.value,-8888],['!=',this.state.value,-7777],['==','usetype',this.state.usetype]]     
+>>>>>>> 344f67e678368b44fb634dab254dc135d12c4cd8
         if (this.map.getLayer("nb-boundary")){
             this.map.setFilter('nb-boundary',filter);
             this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.year][this.state.value][this.state.usetype]);
@@ -168,10 +194,16 @@ class Map extends React.Component {
       this.map.remove();
     }
   
-    render() {
+    render() {    
+        const loading= this.state.loading?(<Loading/>):null;
       return (
         <div  ref={el => this.mapContainer = el} >
+<<<<<<< HEAD
             <Bar usetypes={this.state.usetypes} values={this.state.values} updateValue={this.updateValue} updateUsetype={this.updateUsetype}/>
+=======
+            {loading}
+            <Bar usetypes={Object.keys(this.state.usetypes)} values={Object.keys(this.state.values)} updateValue={this.updateValue} updateUsetype={this.updateUsetype}/>
+>>>>>>> 344f67e678368b44fb634dab254dc135d12c4cd8
             <Legend year ={this.state.year} updateYear={this.updateYear} usetype={this.state.usetype} value={this.state.value}/> 
             <PanelPart barDisplay={this.state.barDisplay} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData} options={this.state.options}/>
         </div>
