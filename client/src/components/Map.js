@@ -70,7 +70,7 @@ class Map extends React.Component {
                     let feature = {};
                     feature.type = "Feature";
                     //need to convert json string to int, otherwise the legend wont work
-                    feature.properties = {"name":geo.name,"usetype":geo.usetype,"id":geo.id,"usage":parseInt(geo.usage),"sqft":parseInt(geo.sqft),"usage_med":parseInt(geo.usage_med),"usage_med_sqft":parseInt(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
+                    feature.properties = {"name":geo.name,"usetype":geo.usetype,"id":geo.id,"usage":Number(geo.usage),"sqft":Number(geo.sqft),"usage_med":Number(geo.usage_med),"usage_med_sqft":Number(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
                     feature.geometry = JSON.parse(geo.st_asgeojson);
                     results.features.push(feature);
                 })
@@ -137,7 +137,7 @@ class Map extends React.Component {
         const filter = ["all",['==','year',this.state.year],['!=',this.state.value,-9999],['!=',this.state.value,-8888],['!=',this.state.value,-7777],['==','usetype',this.state.usetype]]     
         if (this.map.getLayer("nb-boundary")){
             this.map.setFilter('nb-boundary',filter);
-            this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.year][this.state.value][this.state.usetype]);
+            this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.value][this.state.usetype]);
         }
 
       }
@@ -155,14 +155,14 @@ class Map extends React.Component {
             results["features"] = [];
             data.data.forEach(geo=>{
                 let feature = {};
-                feature.properties = {"name":geo.name,"id":geo.id,"usetype":geo.usetype,"usage":parseInt(geo.usage_int),"sqft":parseInt(geo.sqft),"usage_med":parseInt(geo.usage_med),"usage_med_sqft":parseInt(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
+                feature.properties = {"name":geo.name,"id":geo.id,"usetype":geo.usetype,"usage":Number(geo.usage_int),"sqft":Number(geo.sqft),"usage_med":Number(geo.usage_med),"usage_med_sqft":Number(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
                 results.features.push(feature);
             })
             this.setState({ allData:results })
         });
     }
     setFill =() =>{
-        this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.year][this.state.value][this.state.usetype]);
+        this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.value][this.state.usetype]);
     }
     componentWillUnmount() {
       this.map.remove();
