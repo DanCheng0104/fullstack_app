@@ -5,6 +5,7 @@ import '../css/style.css';
 import {color} from '../palette.json';
 import Legend from './Legend';
 import PanelPart from './PanelPart';
+import Bar from './Bar';
 mapboxgl.accessToken =  'pk.eyJ1IjoiZGNoZW5nMDEwNCIsImEiOiJjaXE0MDh2MHQwMG9xZnhtNGg0azVybGxtIn0.7jdNnbpd8kQI3qO1HfSnUg';
 
 class Map extends React.Component {
@@ -13,6 +14,8 @@ class Map extends React.Component {
     state = {
         geos: {},
         year : 2014,
+        value:'usage',
+        usetype:'all',
         barDisplay: false,
         allData:{},
         chartData : 
@@ -25,16 +28,10 @@ class Map extends React.Component {
               xAxes: [{ stacked: true }],
               yAxes: [{ stacked: true }]
         },
-        responsive: true//,
-            // tooltips:{
-            //   callbacks: {
-            //     label: function(tooltipItems, data) {
-            //         //return data.datasets[tooltipItems.datasetIndex].label +': ' + tooltipItems.yLabel + ' €';
-            //         console.log(tooltipItems);
-            //     }
-            // }
-            //}
-        }
+        responsive: true
+        },
+        values:['Total', 'Median','Median Per sqft'],
+        usetypes:['All','Commercial','Institutional','Mixed Use','Other','Residential']
     };
 
     updateYear =(year)=>{
@@ -44,8 +41,12 @@ class Map extends React.Component {
     updateBar =(display)=>{
         this.setState({barDisplay:display});
     }
-    
-
+    updateValue =(value) =>{
+        console.log(value);
+    }
+    updateUsetype =(value) =>{
+        console.log(value);        
+    }
     componentWillMount(){
 
     }
@@ -70,7 +71,7 @@ class Map extends React.Component {
                     let feature = {};
                     feature.type = "Feature";
                     //need to convert json string to int, otherwise the legend wont work
-                    feature.properties = {"name":geo.name,"id":geo.id,"usage":parseInt(geo.usage_int),"sqft":parseInt(geo.sqft),"usage_med":parseInt(geo.usage_med),"usage_med_sqft":parseInt(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
+                    feature.properties = {"name":geo.name,"usetype":geo.usetype,"id":geo.id,"usage":parseInt(geo.usage),"sqft":parseInt(geo.sqft),"usage_med":parseInt(geo.usage_med),"usage_med_sqft":parseInt(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
                     feature.geometry = JSON.parse(geo.st_asgeojson);
                     results.features.push(feature);
                 })
@@ -88,22 +89,20 @@ class Map extends React.Component {
                       "fill-outline-color": "#e1cdb5",
                       'fill-opacity': 1
                   },
-                   "filter":  ["all",['==','year',this.state.year],['!=','usage',-9999]] 
+                   "filter":  ["all",['==','year',this.state.year],['!=',this.state.value,-9999],['==','usetype',this.state.usetype]] 
                 });    
-                  this.setFill(this.state.year);
+                  this.setFill();
             });
 
 
             this.map.on('click',(e)=>{
                 const features = this.map.queryRenderedFeatures(e.point,{layers:['nb-boundary']});
-                console.log(this.state.allData);
+                // console.log(this.state.allData);
                 if (features.length>0){
                     this.updateBar(true);
-                    //this.panelRef.current.style["grid-row"]="12/19";
-                    // const year = features[0].properties.year;
                     const id = features[0].properties.id;
                     const usetypes = ["commercial","institutional","other","industrial","res","mixed_use"];
-                    const years = [2011,2012,2013,2014,2015];
+                    const years = [2011,2012,2013,2014,2015,2016];
                     let tempData = {"commercial":[],"institutional":[],"other":[],"industrial":[],"res":[],"mixed_use":[]};
                     let colors={"commercial":'#7fc97f',"institutional":'#beaed4',"other":'#fdc086',"industrial":'#ffff99',"res":'#386cb0',"mixed_use":'#f0027f'};
                     usetypes.forEach((usetype)=>{
@@ -119,7 +118,6 @@ class Map extends React.Component {
                     })
                     let datasets = [];
                     Object.keys(tempData).forEach(key=>{
-                        //let color = (tempData[key]===100000)?'#000000':colors[key];
                         const dataset = {
                           label: key,
                           data:tempData[key],
@@ -136,10 +134,10 @@ class Map extends React.Component {
     }
 
     componentDidUpdate() {
-        const filter = ["all",['==','year',this.state.year],['!=','USAGE_int',-9999]];    
+        const filter = ["all",['==','year',this.state.year],['!=',this.state.value,-9999],['==','usetype',this.state.usetype]]     
         if (this.map.getLayer("nb-boundary")){
             this.map.setFilter('nb-boundary',filter);
-            this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.year]);
+            this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.year][this.state.value][this.state.usetype]);
         }
 
       }
@@ -147,20 +145,6 @@ class Map extends React.Component {
     getAllUsage=()=>{
         return fetch('api/nbs')
         .then(res => res.json())
-        // .then(data => {
-        //     let results = {};
-        //     results['type'] = "FeatureCollection";
-        //     results["features"] = [];
-        //     data.data.forEach(geo=>{
-        //         let feature = {};
-        //         feature.type = "Feature";
-        //         //need to convert json string to int, otherwise the legend wont work
-        //         feature.properties = {"name":geo.name,"id":geo.id,"usage":parseInt(geo.usage_int),"sqft":parseInt(geo.sqft),"usage_med":parseInt(geo.usage_med),"usage_med_sqft":parseInt(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
-        //         feature.geometry = JSON.parse(geo.st_asgeojson);
-        //         results.features.push(feature);
-        //     })
-        //     this.setState({ geos:results })
-        // });
     }
 
     getAllData=()=>{
@@ -177,8 +161,8 @@ class Map extends React.Component {
             this.setState({ allData:results })
         });
     }
-    setFill =(year) =>{
-        this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.year]);
+    setFill =() =>{
+        this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.year][this.state.value][this.state.usetype]);
     }
     componentWillUnmount() {
       this.map.remove();
@@ -186,11 +170,12 @@ class Map extends React.Component {
   
     render() {
       return (
-
         <div  ref={el => this.mapContainer = el} >
-            <Legend year ={this.state.year} updateYear={this.updateYear}/> 
+            <Bar usetypes={this.state.usetypes} values={this.state.values} updateValue={this.updateValue} updateUsetype={this.updateUsetype}/>
+            <Legend year ={this.state.year} updateYear={this.updateYear} usetype={this.state.usetype} value={this.state.value}/> 
             <PanelPart barDisplay={this.state.barDisplay} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData} options={this.state.options}/>
         </div>
+
       )
               
     }

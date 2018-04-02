@@ -74,6 +74,25 @@ grid-row:1;
 .legendTag{
   display: inline;
 }
+/* middlebar */
+.middlebar{
+    grid-row:1/2;
+    grid-column: 1/-1;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.125);
+    font-family: Overpass,sans-serif;
+    font-weight: 400;
+    font-size:1.2em;
+    /* z-index: 900; */
+    background-color: #e9ecef;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+
+}
+.selectContent{
+  grid-column: 2/2;
+
+}
 /* PanelPart */
 .bot-bar{  
   font-family: Overpass,sans-serif;
@@ -95,6 +114,7 @@ margin-left:50%;
   font-size : 1rem;
   text-align: center;
   line-height: 20px;
+  grid-row:3;
 
 }
 
