@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
+import BarChart from './BarChart';
 import '../css/style.css';
 
 
@@ -32,12 +33,12 @@ class PanelPart extends Component {
   }
 
   render() {      
-      const barChart = this.props.barDisplay ? (<Bar data ={this.props.chartData}  height={234} width={1100} options = {this.props.options}/>):null;
+      //const barChart = this.props.barDisplay ? (<Bar data ={this.props.chartData}  height={234} width={1100} options = {this.props.options}/>):null;
       const arrow = this.props.barDisplay ? (<span className="glyphicon glyphicon-chevron-down"  onClick={(e)=>this.ArrowChange(e)}></span>):(<span className="glyphicon glyphicon-chevron-up" onClick={(e)=>this.ArrowChange(e)}></span>);
     return (      
       <div className='bot-bar' ref={this.panelRef}>
-          {arrow}
-          {barChart}
+          {/* {arrow} */}
+          <BarChart data={[5,10,1,3]} size={[400,200]} />
       </div>
 
       
