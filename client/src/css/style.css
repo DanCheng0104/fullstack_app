@@ -106,11 +106,21 @@ grid-row:1;
   grid-column: 4/16; 
   background-color: #ffffff;
   z-index: 1;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 20px auto;
   
 } 
+
 .bot-bar span{
-margin-left:50%;
+  grid-row:1/1;
+  grid-column: 1/-1; 
 }
+.bot-bar div {
+  grid-column: 1/-1;
+  grid-row: 2/2;
+} 
+
 
 /* footer */
 .footer{

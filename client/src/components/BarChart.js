@@ -4,123 +4,106 @@ import { axis } from 'd3-axis';
 import { max } from 'd3-array';
 import { stack } from 'd3-shape';
 import { select } from 'd3-selection';
+// import ResponsiveWrapper from './ResponsiveWrapper';
 
 class BarChart extends Component {
 
    componentDidMount() {
-      this.createBarChart2()
+      this.createBarChart();
    }
    componentDidUpdate() {
-      this.createBarChart2()
-   }
-//    createBarChart =() => {
-//       const node = this.node
-//       const dataMax = max(this.props.data)
-//       const yScale = scaleLinear()
-//          .domain([0, dataMax])
-//          .range([0, this.props.size[1]])
-//         select(node)
-//             .selectAll('rect')
-//             .data(this.props.data)
-//             .enter()
-//             .append('rect')
-        
-//         select(node)
-//             .selectAll('rect')
-//             .data(this.props.data)
-//             .exit()
-//             .remove()
-        
-//         select(node)
-//       .selectAll('rect')
-//       .data(this.props.data)
-//       .style('fill', '#fe9922')
-//       .attr('x', (d,i) => i * 25)
-//       .attr('y', d => this.props.size[1] - yScale(d))
-//       .attr('height', d => yScale(d))
-//       .attr('width', 25)
-//    }
+    this.createBarChart();
+  }
+   createBarChart =() => {
 
-   createBarChart2 =() => {
     const node = this.node;
-    var xData = ["A", "B", "C"];
-    var data=[
- 
-        {month:'Jan', A:20, B: 5,  C: 10},
-        {month:'Feb', A:25, B: 10, C: 20}
-        
-    ];
-    var margin = {top: 20, right: 50, bottom: 30, left: 50},
-            width = 400 - margin.left - margin.right,
-            height = 300 - margin.top - margin.bottom;
-    var y = d3.scaleLinear().rangeRound([height, 0]);     
-    var x = d3.scaleBand().rangeRound([0, width]).padding(0.35);
-    
+    var s = d3.selectAll('svg');
+    s.remove();
+    const data = [
+        {month: "Q1-2016", apples: 3840, bananas: 1920, cherries: 1960, dates: 400},
+        {month: "Q2-2016", apples: 1600, bananas: 1440, cherries: 960, dates: 400},
+        {month: "Q3-2016", apples:  640, bananas:  960, cherries: 640, dates: 600},
+        {month: "Q4-2016", apples:  320, bananas:  480, cherries: 640, dates: 400}
+      ];
+      
+    const series = d3.stack()
+          .keys(["apples", "bananas", "cherries", "dates"])
+          .offset(d3.stackOffsetDiverging)
+          (data);
 
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
-    var xAxis =d3.axisBottom(x).tickFormat(function(d) { return d.x;});;
-    // var xAxis = d3.svg.axis()
-    //         .scale(x)
-    //         .orient("bottom");
-     
-    var svg = select(node).append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-     
-    var dataIntermediate = xData.map(function (c) {
-        return data.map(function (d) {
-            return {x: d.month, y: d[c]};
-        });
-    });
-     
-    var dataStackLayout = d3.stack().keys(["Jan", "Feb"]).offset(d3.stackOffsetDiverging)(dataIntermediate);
-
-     
-    x.domain(dataStackLayout[0].map(function (d) {
-        return d.x;
-    }));
-     
-    y.domain([0,
-        max(dataStackLayout[dataStackLayout.length - 1],
-                function (d) { return d.y0 + d.y;})
-        ])
-      .nice();
-     
-    var layer = svg.selectAll(".stack")
-            .data(dataStackLayout)
-            .enter().append("g")
-            .attr("class", "stack")
-            .style("fill", function (d, i) {
-                return color(i);
-            });
-     
-    layer.selectAll("rect")
-            .data(function (d) {
-                return d;
-            })
-            .enter().append("rect")
-            .attr("x", function (d) {
-                return x(d.x);
-            })
-            .attr("y", function (d) {
-                return y(d.y + d.y0);
-            })
-            .attr("height", function (d) {
-                return y(d.y0) - y(d.y + d.y0);
-            })
-            .attr("width", x.rangeBand());
-     
+    const margin = {top: 20, right: 30, bottom: 30, left: 60};
+    // const parentWidth = this.node.offsetWidth;
+    // const parentHeight = this.node.offsetHeight;
+    const width = this.node.offsetWidth;
+    const height = 300;
+    // node.style.width = this.node.parentElement.clientWidth;
+    // node.style.height = this.node.parentElement.clientHeight;
+    // const height = 150;
+    // const width = 700;
+      
+    const x = d3.scaleBand()
+          .domain(data.map(function(d) { return d.month; }))
+          .rangeRound([margin.left, width - margin.right])
+          .padding(0.1);
+      
+    const y = d3.scaleLinear()
+          .domain([d3.min(series, this.stackMin), d3.max(series, this.stackMax)])
+          .rangeRound([height - margin.bottom, margin.top]);
+      
+    const z = d3.scaleOrdinal(d3.schemeCategory10);
+    // select(node).attr("preserveAspectRatio", "xMinYMin meet")
+    // .attr("viewBox", "0 0 960 500")
+    const svg = select(node).append('svg')
+    // .attr("width", '80%')
+    // .attr("height", '20%')
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    //.attr('viewBox','0 0 '+Math.min(width,height) +' '+Math.min(width,height) )
+    .attr('preserveAspectRatio','xMinYMin');
+      
     svg.append("g")
-            .attr("class", "axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
-   }
-render() {
-      return <svg ref={node => this.node = node}
-      width={500} height={200}>
-      </svg>
-   }
+    .selectAll("g")
+    .data(series)
+    .enter().append("g")
+    .attr("fill", function(d) { return z(d.key); })
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+    .attr("width", x.bandwidth)
+    .attr("x", function(d) { return x(d.data.month); })
+    .attr("y", function(d) { return y(d[1]); })
+    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+      
+    svg.append("g")
+    .attr("transform", "translate(0," + y(0) + ")")
+    .call(d3.axisBottom(x));
+      
+    svg.append("g")
+    .attr("transform", "translate(" + margin.left + ",0)")
+    .call(d3.axisLeft(y));
+      
 }
-export default BarChart
+
+   stackMin = (serie) =>{
+    return d3.min(serie, function(d) { return d[0]; });
+  }
+
+  stackMax = (serie) =>{
+    return d3.max(serie, function(d) { return d[1]; });
+  }
+    
+render() {
+    // const svgDimensions = {
+    //     width: Math.max(this.props.parentWidth, 1000),
+    //     height: 150
+    // }
+    return (
+        <div ref={node => this.node = node}>
+            {/* <svg ref={node => this.node = node}>   
+               
+            </svg> */}
+        </div>
+
+
+      )   }
+}
+export default BarChart;
