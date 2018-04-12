@@ -23,7 +23,8 @@ class BarChart extends Component {
         {month: "Q1-2016", apples: 3840, bananas: 1920, cherries: 1960, dates: 400},
         {month: "Q2-2016", apples: 1600, bananas: 1440, cherries: 960, dates: 400},
         {month: "Q3-2016", apples:  640, bananas:  960, cherries: 640, dates: 600},
-        {month: "Q4-2016", apples:  320, bananas:  480, cherries: 640, dates: 400}
+        {month: "Q4-2016", apples:  320, bananas:  480, cherries: 640, dates: 400},
+        {month: "Q5-2016", apples:  320, bananas:  480, cherries: 640, dates: 400}
       ];
       
     const series = d3.stack()
@@ -32,14 +33,9 @@ class BarChart extends Component {
           (data);
 
     const margin = {top: 20, right: 30, bottom: 30, left: 60};
-    // const parentWidth = this.node.offsetWidth;
-    // const parentHeight = this.node.offsetHeight;
     const width = this.node.offsetWidth;
-    const height = 300;
-    // node.style.width = this.node.parentElement.clientWidth;
-    // node.style.height = this.node.parentElement.clientHeight;
-    // const height = 150;
-    // const width = 700;
+    const height = 170;
+
       
     const x = d3.scaleBand()
           .domain(data.map(function(d) { return d.month; }))
@@ -51,8 +47,6 @@ class BarChart extends Component {
           .rangeRound([height - margin.bottom, margin.top]);
       
     const z = d3.scaleOrdinal(d3.schemeCategory10);
-    // select(node).attr("preserveAspectRatio", "xMinYMin meet")
-    // .attr("viewBox", "0 0 960 500")
     const svg = select(node).append('svg')
     // .attr("width", '80%')
     // .attr("height", '20%')
