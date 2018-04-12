@@ -20,20 +20,9 @@ class Map extends React.Component {
         usetype:'all',
         barDisplay: false,
         allData:{},
-        chartData : 
-        {
-            labels: ['2011','2012','2013','2014','2015','2016'],
-            datasets: []
-        },
-        options:{
-            scales: {
-              xAxes: [{ stacked: true }],
-              yAxes: [{ stacked: true }]
-        },
-        responsive: true
-        },
+        chartData : [],
         values:{'Total':'usage', 'Median':'usage_med','Median Per sqft':'usage_med_sqft'},
-        usetypes:{'All':'all','Commercial':'commercial','Institutional':'institutional','Mixed Use':'mixed_use','Other':'other','Residential':'res'}
+        usetypes:{'All':'all','Commercial':'commercial','Institutional':'institutional','Industrial':'industrial','Mixed Use':'mixed_use','Other':'other','Residential':'res'}
     };
 
     updateYear =(year)=>{
@@ -97,37 +86,39 @@ class Map extends React.Component {
 
             this.map.on('click',(e)=>{
                 const features = this.map.queryRenderedFeatures(e.point,{layers:['nb-boundary']});
-                // console.log(this.state.allData);
+                // const data = [
+                //     {month: "Q1-2016", apples: 3840, bananas: 1920, cherries: 1960, dates: 400},
+                //     {month: "Q2-2016", apples: 1600, bananas: 1440, cherries: 960, dates: 400},
+                //     {month: "Q3-2016", apples:  640, bananas:  960, cherries: 640, dates: 600},
+                //     {month: "Q4-2016", apples:  320, bananas:  480, cherries: 640, dates: 400},
+                //     {month: "Q5-2016", apples:  320, bananas:  480, cherries: 640, dates: 400}
+                //   ];
                 if (features.length>0){
                     this.updateBar(true);
+                    let data = [];
                     const id = features[0].properties.id;
                     const usetypes = ["commercial","institutional","other","industrial","res","mixed_use"];
                     const years = [2011,2012,2013,2014,2015,2016];
                     let tempData = {"commercial":[],"institutional":[],"other":[],"industrial":[],"res":[],"mixed_use":[]};
-                    let colors={"commercial":'#7fc97f',"institutional":'#beaed4',"other":'#fdc086',"industrial":'#ffff99',"res":'#386cb0',"mixed_use":'#f0027f'};
-                    usetypes.forEach((usetype)=>{
-                        years.forEach((year)=>{
-                        this.state.allData.features.forEach((feature)=>{
-                            if (feature.properties.id== id & feature.properties.year == year & feature.properties.usetype == usetype & ![-7777,-8888,-9999].includes(feature.properties.usage)){
-                            let usage;
-                            usage = feature.properties.usage;
-                            tempData[usetype].push(usage);          
-                            }
-                        })
-                        })
+                    // let colors={"commercial":'#7fc97f',"institutional":'#beaed4',"other":'#fdc086',"industrial":'#ffff99',"res":'#386cb0',"mixed_use":'#f0027f'};
+                    years.forEach((year)=>{
+                        let item = {};
+                        item['year'] = year;
+                        usetypes.forEach((usetype)=>{
+                            this.state.allData.features.forEach((feature)=>{
+                                if (feature.properties.id== id & feature.properties.year == year & feature.properties.usetype == usetype & ![-7777,-8888,-9999].includes(feature.properties.usage)){
+                                let usage;
+                                usage = feature.properties.usage;
+                                item[usetype] = usage;         
+                                }
+                            });
+                        });
+                        data.push(item);
                     })
-                    let datasets = [];
-                    Object.keys(tempData).forEach(key=>{
-                        const dataset = {
-                          label: key,
-                          data:tempData[key],
-                          backgroundColor: colors[key]
-                        }
-                        datasets.push(dataset)
-                    })
-                    const newData = {...this.state.chartData};
-                    newData.datasets = datasets;
-                    this.setState({chartData:newData});
+
+                    // const newData = {...this.state.chartData};
+                    // newData= data;
+                    this.setState({chartData:data});
                 }
             });
         });
@@ -175,7 +166,7 @@ class Map extends React.Component {
             {loading}
             <Bar usetypes={Object.keys(this.state.usetypes)} values={Object.keys(this.state.values)} updateValue={this.updateValue} updateUsetype={this.updateUsetype}/>
             <Legend year ={this.state.year} updateYear={this.updateYear} usetype={this.state.usetype} value={this.state.value}/> 
-            <PanelPart barDisplay={this.state.barDisplay} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData} options={this.state.options}/>
+            <PanelPart barDisplay={this.state.barDisplay} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData}/>
         </div>
 
       )

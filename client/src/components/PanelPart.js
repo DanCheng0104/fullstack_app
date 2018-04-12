@@ -34,7 +34,7 @@ class PanelPart extends Component {
   }
 
   render() {      
-      const barChart = this.props.barDisplay ? (<BarChart/>):null;
+      const barChart = this.props.barDisplay ? (<BarChart chartData = {this.props.chartData}/>):null;
       const arrow = this.props.barDisplay ? (<span className="glyphicon glyphicon-chevron-down"  ref={ss => this.ss = ss} onClick={(e)=>this.ArrowChange(e)}></span>):(<span className="glyphicon glyphicon-chevron-up" ref={ss => this.ss = ss} onClick={(e)=>this.ArrowChange(e)}></span>);
     return (      
       <div className='bot-bar' ref={this.panelRef}>

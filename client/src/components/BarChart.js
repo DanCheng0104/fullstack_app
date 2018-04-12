@@ -81,23 +81,15 @@ class BarChart extends Component {
     return d3.min(serie, function(d) { return d[0]; });
   }
 
-  stackMax = (serie) =>{
+   stackMax = (serie) =>{
     return d3.max(serie, function(d) { return d[1]; });
   }
     
-render() {
-    // const svgDimensions = {
-    //     width: Math.max(this.props.parentWidth, 1000),
-    //     height: 150
-    // }
+   render() {
     return (
         <div ref={node => this.node = node}>
-            {/* <svg ref={node => this.node = node}>   
-               
-            </svg> */}
         </div>
-
-
-      )   }
+      )
+    }
 }
 export default BarChart;
