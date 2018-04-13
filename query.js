@@ -1,22 +1,22 @@
 const promise = require('bluebird');
 
 //prod
-const options = {
-    // Initialization Options
-    promiseLib: promise
-};
-const pgp = require('pg-promise')(options);
-pgp.pg.defaults.poolSize = 20;
-const connectionString = `${process.env.DATABASE_URL}?ssl=true`;
-const db = pgp(connectionString);
-//local
 // const options = {
 //     // Initialization Options
 //     promiseLib: promise
-//   };
+// };
 // const pgp = require('pg-promise')(options);
-// const config = require('./config');
-// const db = pgp(config.connectionString);
+// pgp.pg.defaults.poolSize = 20;
+// const connectionString = `${process.env.DATABASE_URL}?ssl=true`;
+// const db = pgp(connectionString);
+//local
+const options = {
+    // Initialization Options
+    promiseLib: promise
+  };
+const pgp = require('pg-promise')(options);
+const config = require('./config');
+const db = pgp(config.connectionString);
 
 // add query functions
 function getAllNbs(req, res, next) {
