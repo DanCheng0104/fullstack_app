@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
+import BarChart from './BarChart';
 import '../css/style.css';
 
 
@@ -11,10 +12,11 @@ class PanelPart extends Component {
   }
   componentDidUpdate(){
       if (this.props.barDisplay) {
-        this.panelRef.current.style["grid-row"]="12/19";
+        this.panelRef.current.style["grid-row"]="14/19";
 
       }
   }
+
   ArrowChange=(e)=>{
     console.log(this.panelRef);
     if (e.target.className === 'glyphicon glyphicon-chevron-down'){
@@ -24,7 +26,7 @@ class PanelPart extends Component {
       
     }else{
       e.target.className='glyphicon glyphicon-chevron-down';
-      this.panelRef.current.style["grid-row"]="12/19";
+      this.panelRef.current.style["grid-row"]="14/19";
       this.props.updateBar(true);
       
     }
@@ -32,12 +34,13 @@ class PanelPart extends Component {
   }
 
   render() {      
-      const barChart = this.props.barDisplay ? (<Bar data ={this.props.chartData}  height={234} width={1100} options = {this.props.options}/>):null;
-      const arrow = this.props.barDisplay ? (<span className="glyphicon glyphicon-chevron-down"  onClick={(e)=>this.ArrowChange(e)}></span>):(<span className="glyphicon glyphicon-chevron-up" onClick={(e)=>this.ArrowChange(e)}></span>);
+      const barChart = this.props.barDisplay ? (<BarChart chartData = {this.props.chartData}/>):null;
+      const arrow = this.props.barDisplay ? (<span className="glyphicon glyphicon-chevron-down"  ref={ss => this.ss = ss} onClick={(e)=>this.ArrowChange(e)}></span>):(<span className="glyphicon glyphicon-chevron-up" ref={ss => this.ss = ss} onClick={(e)=>this.ArrowChange(e)}></span>);
     return (      
       <div className='bot-bar' ref={this.panelRef}>
           {arrow}
           {barChart}
+          {/* <BarChart/> */}
       </div>
 
       

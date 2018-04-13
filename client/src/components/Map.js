@@ -20,20 +20,9 @@ class Map extends React.Component {
         usetype:'all',
         barDisplay: false,
         allData:{},
-        chartData : 
-        {
-            labels: ['2011','2012','2013','2014','2015','2016'],
-            datasets: []
-        },
-        options:{
-            scales: {
-              xAxes: [{ stacked: true }],
-              yAxes: [{ stacked: true }]
-        },
-        responsive: true
-        },
+        chartData : [],
         values:{'Total':'usage', 'Median':'usage_med','Median Per sqft':'usage_med_sqft'},
-        usetypes:{'All':'all','Commercial':'commercial','Institutional':'institutional','Mixed Use':'mixed_use','Other':'other','Residential':'res'}
+        usetypes:{'All':'all','Commercial':'commercial','Institutional':'institutional','Industrial':'industrial','Mixed Use':'mixed_use','Other':'other','Residential':'res'}
     };
 
     updateYear =(year)=>{
@@ -70,7 +59,7 @@ class Map extends React.Component {
                     let feature = {};
                     feature.type = "Feature";
                     //need to convert json string to int, otherwise the legend wont work
-                    feature.properties = {"name":geo.name,"usetype":geo.usetype,"id":geo.id,"usage":parseInt(geo.usage),"sqft":parseInt(geo.sqft),"usage_med":parseInt(geo.usage_med),"usage_med_sqft":parseInt(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
+                    feature.properties = {"name":geo.name,"usetype":geo.usetype,"id":geo.id,"usage":Number(geo.usage),"sqft":Number(geo.sqft),"usage_med":Number(geo.usage_med),"usage_med_sqft":Number(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
                     feature.geometry = JSON.parse(geo.st_asgeojson);
                     results.features.push(feature);
                 })
@@ -97,37 +86,39 @@ class Map extends React.Component {
 
             this.map.on('click',(e)=>{
                 const features = this.map.queryRenderedFeatures(e.point,{layers:['nb-boundary']});
-                // console.log(this.state.allData);
+                // const data = [
+                //     {month: "Q1-2016", apples: 3840, bananas: 1920, cherries: 1960, dates: 400},
+                //     {month: "Q2-2016", apples: 1600, bananas: 1440, cherries: 960, dates: 400},
+                //     {month: "Q3-2016", apples:  640, bananas:  960, cherries: 640, dates: 600},
+                //     {month: "Q4-2016", apples:  320, bananas:  480, cherries: 640, dates: 400},
+                //     {month: "Q5-2016", apples:  320, bananas:  480, cherries: 640, dates: 400}
+                //   ];
                 if (features.length>0){
                     this.updateBar(true);
+                    let data = [];
                     const id = features[0].properties.id;
                     const usetypes = ["commercial","institutional","other","industrial","res","mixed_use"];
                     const years = [2011,2012,2013,2014,2015,2016];
                     let tempData = {"commercial":[],"institutional":[],"other":[],"industrial":[],"res":[],"mixed_use":[]};
-                    let colors={"commercial":'#7fc97f',"institutional":'#beaed4',"other":'#fdc086',"industrial":'#ffff99',"res":'#386cb0',"mixed_use":'#f0027f'};
-                    usetypes.forEach((usetype)=>{
-                        years.forEach((year)=>{
-                        this.state.allData.features.forEach((feature)=>{
-                            if (feature.properties.id== id & feature.properties.year == year & feature.properties.usetype == usetype & ![-7777,-8888,-9999].includes(feature.properties.usage)){
-                            let usage;
-                            usage = feature.properties.usage;
-                            tempData[usetype].push(usage);          
-                            }
-                        })
-                        })
+                    // let colors={"commercial":'#7fc97f',"institutional":'#beaed4',"other":'#fdc086',"industrial":'#ffff99',"res":'#386cb0',"mixed_use":'#f0027f'};
+                    years.forEach((year)=>{
+                        let item = {};
+                        item['year'] = year;
+                        usetypes.forEach((usetype)=>{
+                            this.state.allData.features.forEach((feature)=>{
+                                if (feature.properties.id== id & feature.properties.year == year & feature.properties.usetype == usetype & ![-7777,-8888,-9999].includes(feature.properties.usage)){
+                                let usage;
+                                usage = feature.properties.usage;
+                                item[usetype] = usage;         
+                                }
+                            });
+                        });
+                        data.push(item);
                     })
-                    let datasets = [];
-                    Object.keys(tempData).forEach(key=>{
-                        const dataset = {
-                          label: key,
-                          data:tempData[key],
-                          backgroundColor: colors[key]
-                        }
-                        datasets.push(dataset)
-                    })
-                    const newData = {...this.state.chartData};
-                    newData.datasets = datasets;
-                    this.setState({chartData:newData});
+
+                    // const newData = {...this.state.chartData};
+                    // newData= data;
+                    this.setState({chartData:data});
                 }
             });
         });
@@ -137,7 +128,7 @@ class Map extends React.Component {
         const filter = ["all",['==','year',this.state.year],['!=',this.state.value,-9999],['!=',this.state.value,-8888],['!=',this.state.value,-7777],['==','usetype',this.state.usetype]]     
         if (this.map.getLayer("nb-boundary")){
             this.map.setFilter('nb-boundary',filter);
-            this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.year][this.state.value][this.state.usetype]);
+            this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.value][this.state.usetype]);
         }
 
       }
@@ -155,14 +146,14 @@ class Map extends React.Component {
             results["features"] = [];
             data.data.forEach(geo=>{
                 let feature = {};
-                feature.properties = {"name":geo.name,"id":geo.id,"usetype":geo.usetype,"usage":parseInt(geo.usage_int),"sqft":parseInt(geo.sqft),"usage_med":parseInt(geo.usage_med),"usage_med_sqft":parseInt(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
+                feature.properties = {"name":geo.name,"id":geo.id,"usetype":geo.usetype,"usage":Number(geo.usage_int),"sqft":Number(geo.sqft),"usage_med":Number(geo.usage_med),"usage_med_sqft":Number(geo.usage_med_sqft),"year":geo.year,"data_load_period_id":geo.data_load_period_id};
                 results.features.push(feature);
             })
             this.setState({ allData:results })
         });
     }
     setFill =() =>{
-        this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.year][this.state.value][this.state.usetype]);
+        this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.value][this.state.usetype]);
     }
     componentWillUnmount() {
       this.map.remove();
@@ -175,7 +166,7 @@ class Map extends React.Component {
             {loading}
             <Bar usetypes={Object.keys(this.state.usetypes)} values={Object.keys(this.state.values)} updateValue={this.updateValue} updateUsetype={this.updateUsetype}/>
             <Legend year ={this.state.year} updateYear={this.updateYear} usetype={this.state.usetype} value={this.state.value}/> 
-            <PanelPart barDisplay={this.state.barDisplay} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData} options={this.state.options}/>
+            <PanelPart barDisplay={this.state.barDisplay} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData}/>
         </div>
 
       )
