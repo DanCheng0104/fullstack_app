@@ -19,6 +19,7 @@ class Map extends React.Component {
         value:'usage',
         usetype:'all',
         barDisplay: false,
+        d3Display:false,
         allData:{},
         chartData : [],
         values:{'Total':'usage', 'Median':'usage_med','Median Per sqft':'usage_med_sqft'},
@@ -38,6 +39,9 @@ class Map extends React.Component {
     updateUsetype =(value) =>{
         this.setState({usetype:this.state.usetypes[value]});   
     }
+   updateD3Display = (value) => {
+       this.setState({d3Display:value});
+   }
 
     componentDidMount() {
 
@@ -111,6 +115,7 @@ class Map extends React.Component {
                     // const newData = {...this.state.chartData};
                     // newData= data;
                     this.setState({chartData:data});
+                    this.updateD3Display(true);
                 }
             });
         });
@@ -158,7 +163,7 @@ class Map extends React.Component {
             {loading}
             <Bar usetypes={Object.keys(this.state.usetypes)} values={Object.keys(this.state.values)} updateValue={this.updateValue} updateUsetype={this.updateUsetype}/>
             <Legend year ={this.state.year} updateYear={this.updateYear} usetype={this.state.usetype} value={this.state.value}/> 
-            <PanelPart barDisplay={this.state.barDisplay} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData}/>
+            <PanelPart barDisplay={this.state.barDisplay} d3Display={this.state.d3Display} updateD3Display={this.updateD3Display} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData}/>
         </div>
 
       )

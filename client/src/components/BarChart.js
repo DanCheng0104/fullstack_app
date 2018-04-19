@@ -9,10 +9,15 @@ import { select } from 'd3-selection';
 class BarChart extends Component {
 
    componentDidMount() {
-      this.createBarChart();
+    //    if (this.props.d3Display) {
+    //      this.createBarChart();
+    //    }
+      
    }
    componentDidUpdate() {
-    this.createBarChart();
+    if (this.props.d3Display) {
+        this.createBarChart();
+      }
   }
 
    sumValues = (cloneItem) => { 
@@ -20,7 +25,7 @@ class BarChart extends Component {
     };
 
    createBarChart =() => {
-
+    this.props.updateD3Display(false);
     const node = this.node;
     var s = d3.selectAll('svg');
     s.remove();
@@ -76,7 +81,7 @@ class BarChart extends Component {
     .attr("viewBox", `0 0 ${width} ${height}`)
     //.attr('viewBox','0 0 '+Math.min(width,height) +' '+Math.min(width,height) )
     .attr('preserveAspectRatio','xMinYMin');
-    // try to add pattern
+    // add pattern here
 
     svg.append("defs").append("pattern")
     .attr('id','myPattern')
