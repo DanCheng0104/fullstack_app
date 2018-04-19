@@ -45,16 +45,13 @@ class BarChart extends Component {
             maskedValues[key] = maxValue - maxValues[key];
 
         });
-        // maxValues.forEach(value=>{
-        //     console.log(value);
-        // });
     };
     console.log(maskedValues);
     data.forEach(item=>{
         item["masked"] = maskedValues[item.year]
     })
     const series = d3.stack()
-          .keys(["commercial", "institutional", "other", "res",'mixed_use','industrial','masked'])
+          .keys([ "res","commercial", "institutional", "other",'mixed_use','industrial','masked'])
           .offset(d3.stackOffsetDiverging)
           (data);
 
@@ -72,19 +69,36 @@ class BarChart extends Component {
           .domain([d3.min(series, this.stackMin), d3.max(series, this.stackMax)])
           .rangeRound([height - margin.bottom, margin.top]);
       
-    const colors ={"commercial":'#7fc97f',"institutional":'#beaed4',"other":'#fdc086',"res":'#ffff99','mixed_use':'#386cb0','industrial':'#f0027f','masked':'grey'};
+    const colors ={"res":'#ffff99',"commercial":'#7fc97f',"institutional":'#beaed4',"other":'#fdc086','mixed_use':'#386cb0','industrial':'#f0027f','masked':'url(#diagonal-stripe-1)'};
     const svg = select(node).append('svg')
     // .attr("width", '80%')
     // .attr("height", '20%')
     .attr("viewBox", `0 0 ${width} ${height}`)
     //.attr('viewBox','0 0 '+Math.min(width,height) +' '+Math.min(width,height) )
     .attr('preserveAspectRatio','xMinYMin');
-      
+    // try to add pattern
+
+    svg.append("defs").append("pattern")
+    .attr('id','myPattern')
+    .attr("width", 10)
+    .attr("height", 8)
+    .attr('patternUnits',"userSpaceOnUse")
+    .attr('patternTransform','rotate(45)')
+    .append('rect')
+    .attr("width","8")
+    .attr("height","1")
+    .attr("transform","translate(0,0)")
+    .attr("fill","grey" )
+
     svg.append("g")
     .selectAll("g")
     .data(series)
     .enter().append("g")
-    .attr("fill", function(d) { return colors[d.key]; })
+    .style("stroke", 'grey')
+    .style("stroke-width", 0.5)
+    .attr("fill", function(d) { 
+        return ((d.key==='masked')? "url(#myPattern)": colors[d.key]);
+     })
     .selectAll("rect")
     .data(function(d) { return d; })
     .enter().append("rect")
