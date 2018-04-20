@@ -20,10 +20,6 @@ const db = pgp(config.connectionString);
 
 // add query functions
 function getAllNbs(req, res, next) {
-<<<<<<< HEAD
-  console.log('getdb');
-=======
->>>>>>> 77c0b3a393754257482fac78fe1911d6591eabe5
     db.any('select *,st_asgeojson(geom) from water_usage_bld_nb_frontend where usetype in (\'commercial\',\'institutional\',\'other\',\'industrial\',\'res\',\'mixed_use\',\'all\') and data_load_period_id=2;')
       .then(function (data) {
         res.status(200)

@@ -21,7 +21,13 @@ class BarChart extends Component {
     s.remove();
     
     // const data = this.props.chartData;
-      
+    const data = [
+      {month: "Q1-2016", apples: 3840, bananas: 1920, cherries: 1960, dates: 400},
+      {month: "Q2-2016", apples: 1600, bananas: 1440, cherries: 960, dates: 400},
+      {month: "Q3-2016", apples:  640, bananas:  960, cherries: 640, dates: 600},
+      {month: "Q4-2016", apples:  320, bananas:  480, cherries: 640, dates: 400},
+      {month: "Q5-2016", apples:  320, bananas:  480, cherries: 640, dates: 400}
+    ];  
     const series = d3.stack()
           .keys(["apples", "bananas", "cherries", "dates"])
           .offset(d3.stackOffsetDiverging)
@@ -61,7 +67,7 @@ class BarChart extends Component {
     .attr("x", function(d) { return x(d.data.month); })
     .attr("y", function(d) { return y(d[1]); })
     .attr("height", function(d) { return y(d[0]) - y(d[1]); })
-      
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     svg.append("g")
     .attr("transform", "translate(0," + y(0) + ")")
     .call(d3.axisBottom(x));
