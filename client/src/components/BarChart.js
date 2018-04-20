@@ -9,27 +9,54 @@ import { select } from 'd3-selection';
 class BarChart extends Component {
 
    componentDidMount() {
-      this.createBarChart();
+    //    if (this.props.d3Display) {
+    //      this.createBarChart();
+    //    }
+      
    }
    componentDidUpdate() {
-    this.createBarChart();
+    if (this.props.d3Display) {
+        this.createBarChart();
+      }
   }
-   createBarChart =() => {
 
+   sumValues = (cloneItem) => { 
+       return Object.values(cloneItem).reduce((a, b) => a + b)
+    };
+
+   createBarChart =() => {
+    this.props.updateD3Display(false);
     const node = this.node;
     var s = d3.selectAll('svg');
     s.remove();
     
-    // const data = this.props.chartData;
-    const data = [
-      {month: "Q1-2016", apples: 3840, bananas: 1920, cherries: 1960, dates: 400},
-      {month: "Q2-2016", apples: 1600, bananas: 1440, cherries: 960, dates: 400},
-      {month: "Q3-2016", apples:  640, bananas:  960, cherries: 640, dates: 600},
-      {month: "Q4-2016", apples:  320, bananas:  480, cherries: 640, dates: 400},
-      {month: "Q5-2016", apples:  320, bananas:  480, cherries: 640, dates: 400}
-    ];  
+    const data = this.props.chartData;
+    const defaultUsetypes = ["commercial","institutional","other","industrial","res","mixed_use"];
+    let maxValues ={};
+    let maskedValues ={};
+    data.forEach(item=>{
+        let cloneItem = Object.assign({},item);
+        delete cloneItem.year;
+        maxValues[item.year]=(this.sumValues(cloneItem));
+        defaultUsetypes.forEach((usetype,index)=>{
+            if (!Object.keys(cloneItem).includes(usetype)) {
+                item[usetype] = 0;
+            }
+        })
+    })
+    if (Object.keys(maxValues).length >0) {
+        const maxValue = Math.max(...Object.values(maxValues))+100;
+        Object.keys(maxValues).forEach((key)=>{
+            maskedValues[key] = maxValue - maxValues[key];
+
+        });
+    };
+    console.log(maskedValues);
+    data.forEach(item=>{
+        item["masked"] = maskedValues[item.year]
+    })
     const series = d3.stack()
-          .keys(["apples", "bananas", "cherries", "dates"])
+          .keys([ "res","commercial", "institutional", "other",'mixed_use','industrial','masked'])
           .offset(d3.stackOffsetDiverging)
           (data);
 
@@ -39,7 +66,7 @@ class BarChart extends Component {
 
       
     const x = d3.scaleBand()
-          .domain(data.map(function(d) { return d.month; }))
+          .domain(data.map(function(d) { return d.year; }))
           .rangeRound([margin.left, width - margin.right])
           .padding(0.1);
       
@@ -47,24 +74,41 @@ class BarChart extends Component {
           .domain([d3.min(series, this.stackMin), d3.max(series, this.stackMax)])
           .rangeRound([height - margin.bottom, margin.top]);
       
-    const z = d3.scaleOrdinal(d3.schemeCategory10);
+    const colors ={"res":'#ffff99',"commercial":'#7fc97f',"institutional":'#beaed4',"other":'#fdc086','mixed_use':'#386cb0','industrial':'#f0027f','masked':'url(#diagonal-stripe-1)'};
     const svg = select(node).append('svg')
     // .attr("width", '80%')
     // .attr("height", '20%')
     .attr("viewBox", `0 0 ${width} ${height}`)
     //.attr('viewBox','0 0 '+Math.min(width,height) +' '+Math.min(width,height) )
     .attr('preserveAspectRatio','xMinYMin');
-      
+    // add pattern here
+
+    svg.append("defs").append("pattern")
+    .attr('id','myPattern')
+    .attr("width", 10)
+    .attr("height", 8)
+    .attr('patternUnits',"userSpaceOnUse")
+    .attr('patternTransform','rotate(45)')
+    .append('rect')
+    .attr("width","8")
+    .attr("height","1")
+    .attr("transform","translate(0,0)")
+    .attr("fill","grey" )
+
     svg.append("g")
     .selectAll("g")
     .data(series)
     .enter().append("g")
-    .attr("fill", function(d) { return z(d.key); })
+    .style("stroke", 'grey')
+    .style("stroke-width", 0.5)
+    .attr("fill", function(d) { 
+        return ((d.key==='masked')? "url(#myPattern)": colors[d.key]);
+     })
     .selectAll("rect")
     .data(function(d) { return d; })
     .enter().append("rect")
     .attr("width", x.bandwidth)
-    .attr("x", function(d) { return x(d.data.month); })
+    .attr("x", function(d) { return x(d.data.year); })
     .attr("y", function(d) { return y(d[1]); })
     .attr("height", function(d) { return y(d[0]) - y(d[1]); })
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
