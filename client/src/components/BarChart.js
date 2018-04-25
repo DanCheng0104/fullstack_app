@@ -92,11 +92,9 @@ class BarChart extends Component {
     .attr("width", x.bandwidth)
     .attr("x", function(d) { return x(d.data.year); })
     .attr("y", function(d) { return y(d[1]); })
-    .attr("height", function(d) { 
-        console.log(d[0]);
-        console.log(d[1]);
-        return y(d[0]) - y(d[1]); })
-      
+    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
     svg.append("g")
     .attr("transform", "translate(0," + y(0) + ")")
     .call(d3.axisBottom(x));
