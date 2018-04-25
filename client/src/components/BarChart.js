@@ -9,20 +9,19 @@ import { select } from 'd3-selection';
 class BarChart extends Component {
 
    componentDidMount() {
-    //    if (this.props.d3Display) {
-    //      this.createBarChart();
-    //    }
-      
+    window.addEventListener("resize", this.createBarChart);      
    }
+
    componentDidUpdate() {
     if (this.props.d3Display) {
         this.createBarChart();
       }
-  }
+   }
 
    sumValues = (cloneItem) => { 
        return Object.values(cloneItem).reduce((a, b) => a + b)
     };
+
 
    createBarChart =() => {
     this.props.updateD3Display(false);
@@ -30,39 +29,20 @@ class BarChart extends Component {
     var s = d3.selectAll('svg');
     s.remove();
     
-    const data = this.props.chartData;
-    const defaultUsetypes = ["commercial","institutional","other","industrial","res","mixed_use"];
-    let maxValues ={};
-    let maskedValues ={};
-    data.forEach(item=>{
-        let cloneItem = Object.assign({},item);
-        delete cloneItem.year;
-        maxValues[item.year]=(this.sumValues(cloneItem));
-        defaultUsetypes.forEach((usetype,index)=>{
-            if (!Object.keys(cloneItem).includes(usetype)) {
-                item[usetype] = 0;
-            }
-        })
-    })
-    if (Object.keys(maxValues).length >0) {
-        const maxValue = Math.max(...Object.values(maxValues))+100;
-        Object.keys(maxValues).forEach((key)=>{
-            maskedValues[key] = maxValue - maxValues[key];
-
-        });
-    };
-    console.log(maskedValues);
-    data.forEach(item=>{
-        item["masked"] = maskedValues[item.year]
-    })
+    //onst data = Object.assign({},this.props.chartData);
+    let data = this.props.chartData.slice(0);
+    // add function
+    if (data[0]['masked'] === undefined){
+        data = this.fillMaskValues(data);
+    }
     const series = d3.stack()
           .keys([ "res","commercial", "institutional", "other",'mixed_use','industrial','masked'])
           .offset(d3.stackOffsetDiverging)
           (data);
 
     const margin = {top: 20, right: 30, bottom: 30, left: 60};
-    const width = this.node.offsetWidth;
-    const height = 170;
+    const width = this.node.offsetWidth/2;
+    const height = this.node.offsetHeight+60;
 
       
     const x = d3.scaleBand()
@@ -76,11 +56,13 @@ class BarChart extends Component {
       
     const colors ={"res":'#ffff99',"commercial":'#7fc97f',"institutional":'#beaed4',"other":'#fdc086','mixed_use':'#386cb0','industrial':'#f0027f','masked':'url(#diagonal-stripe-1)'};
     const svg = select(node).append('svg')
+    // .classed("svg-container", true) //container class to make it responsive
     // .attr("width", '80%')
     // .attr("height", '20%')
     .attr("viewBox", `0 0 ${width} ${height}`)
     //.attr('viewBox','0 0 '+Math.min(width,height) +' '+Math.min(width,height) )
-    .attr('preserveAspectRatio','xMinYMin');
+    .attr('preserveAspectRatio','xMinYMin')
+    //  .classed("bar", true); 
     // add pattern here
 
     svg.append("defs").append("pattern")
@@ -110,7 +92,10 @@ class BarChart extends Component {
     .attr("width", x.bandwidth)
     .attr("x", function(d) { return x(d.data.year); })
     .attr("y", function(d) { return y(d[1]); })
-    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+    .attr("height", function(d) { 
+        console.log(d[0]);
+        console.log(d[1]);
+        return y(d[0]) - y(d[1]); })
       
     svg.append("g")
     .attr("transform", "translate(0," + y(0) + ")")
@@ -129,10 +114,40 @@ class BarChart extends Component {
    stackMax = (serie) =>{
     return d3.max(serie, function(d) { return d[1]; });
   }
+
+   fillMaskValues = (data) =>{
+    const defaultUsetypes = ["commercial","institutional","other","industrial","res","mixed_use"];
+    let maxValues ={};
+    let maskedValues ={};
+    data.forEach(item=>{
+        let cloneItem = Object.assign({},item);
+        delete cloneItem.year;
+        maxValues[item.year]=(this.sumValues(cloneItem));
+        defaultUsetypes.forEach((usetype,index)=>{
+            if (!Object.keys(cloneItem).includes(usetype)) {
+                item[usetype] = 0;
+            }
+        })
+    })
+    if (Object.keys(maxValues).length >0) {
+        const maxValue = Math.max(...Object.values(maxValues))+100;
+        Object.keys(maxValues).forEach((key)=>{
+            maskedValues[key] = maxValue - maxValues[key];
+
+        });
+    };
+
+    data.forEach(item=>{
+        item["masked"] = maskedValues[item.year]
+    })
+    return data;
+   }
     
    render() {
     return (
-        <div ref={node => this.node = node}>
+        <div className = 'bar_summary'>
+            <div className = 'bar' ref={node => this.node = node}></div>
+            {/* <div className = 'summary'>summary</div> */}
         </div>
       )
     }
