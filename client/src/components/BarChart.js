@@ -54,7 +54,7 @@ class BarChart extends Component {
           .domain([d3.min(series, this.stackMin), d3.max(series, this.stackMax)])
           .rangeRound([height - margin.bottom, margin.top]);
       
-    const colors ={"res":'#ffff99',"commercial":'#7fc97f',"institutional":'#beaed4',"other":'#fdc086','mixed_use':'#386cb0','industrial':'#f0027f','masked':'url(#diagonal-stripe-1)'};
+    const colors ={"res":'#4daf4a',"commercial":'#377eb8',"institutional":'#e41a1c',"other":'#984ea3','mixed_use':'#ffff33','industrial':'#ff7f00','masked':'url(#diagonal-stripe-1)'};
     const svg = select(node).append('svg')
     // .classed("svg-container", true) //container class to make it responsive
     // .attr("width", '80%')
