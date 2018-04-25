@@ -56,10 +56,7 @@ class BarChart extends Component {
       
     const colors ={"res":'#4daf4a',"commercial":'#377eb8',"institutional":'#e41a1c',"other":'#984ea3','mixed_use':'#ffff33','industrial':'#ff7f00','masked':'url(#diagonal-stripe-1)'};
     const svg = select(node).append('svg')
-    // .attr("width", '80%')
-    // .attr("height", '20%')
     .attr("viewBox", `0 0 ${width} ${height}`)
-    //.attr('viewBox','0 0 '+Math.min(width,height) +' '+Math.min(width,height) )
     .attr('preserveAspectRatio','xMinYMin');
     // add pattern here
     svg.append("defs").append("pattern")
@@ -94,11 +91,13 @@ class BarChart extends Component {
     svg.append("g")
     .attr("transform", "translate(0," + y(0) + ")")
     .call(d3.axisBottom(x));
-      
+                
     svg.append("g")
     .attr("transform", "translate(" + margin.left + ",0)")
-    .call(d3.axisLeft(y));
-      
+    .call(d3.axisLeft(y)
+    .ticks(5, "s"));
+    
+
 }
 
    stackMin = (serie) =>{
