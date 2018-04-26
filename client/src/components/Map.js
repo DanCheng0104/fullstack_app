@@ -48,7 +48,7 @@ class Map extends React.Component {
         this.getAllData();
         this.map = new mapboxgl.Map({
             container: this.mapContainer,
-            style: 'mapbox://styles/mapbox/light-v9',
+            style: 'mapbox://styles/dcheng0104/cjgfnupla000k2rpjeim3qsbl',
             zoom : 9,
             center: [ -118.382877, 34.014700]
 
@@ -71,9 +71,9 @@ class Map extends React.Component {
                 this.map.addSource("base_nb",{
                     "type": "geojson",
                     "data": this.state.geos
-                  });
+                });
       
-                  this.map.addLayer({
+                this.map.addLayer({
                   "id": "nb-boundary",
                   "type": "fill",
                   "source": "base_nb",
@@ -84,6 +84,17 @@ class Map extends React.Component {
                    "filter":  ["all",['==','year',this.state.year],['!=',this.state.value,-9999],['==','usetype',this.state.usetype]] 
                 });    
                 this.setFill();
+                this.map.addLayer({
+                    "id": "nb-boundary-masked",
+                    "type": "fill",
+                    "source": "base_nb",
+                    "paint": {
+                        'fill-pattern': 'masked-pattern',
+                        "fill-outline-color": "#e1cdb5",
+                        'fill-opacity': 0.5
+                    },
+                     "filter":  ["all",['==','year',this.state.year],['==',this.state.value,-9999],['==','usetype',this.state.usetype]] 
+                  });                    
                 this.setState({loading:false});
             });
 
@@ -112,8 +123,6 @@ class Map extends React.Component {
                         data.push(item);
                     })
 
-                    // const newData = {...this.state.chartData};
-                    // newData= data;
                     this.setState({chartData:data});
                     this.updateD3Display(true);
                 }
@@ -122,12 +131,15 @@ class Map extends React.Component {
     }
 
     componentDidUpdate() {
-        const filter = ["all",['==','year',this.state.year],['!=',this.state.value,-9999],['!=',this.state.value,-8888],['!=',this.state.value,-7777],['==','usetype',this.state.usetype]]     
+        const filter_nb = ["all",['==','year',this.state.year],['!=',this.state.value,-9999],['!=',this.state.value,-8888],['!=',this.state.value,-7777],['==','usetype',this.state.usetype]];
+        const filter_nb_masked =   ["all",['==','year',this.state.year],['==',this.state.value,-9999],['==','usetype',this.state.usetype]];  
         if (this.map.getLayer("nb-boundary")){
-            this.map.setFilter('nb-boundary',filter);
+            this.map.setFilter('nb-boundary',filter_nb);
             this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.value][this.state.usetype]);
         }
-
+        if (this.map.getLayer("nb-boundary-masked")){
+            this.map.setFilter('nb-boundary-masked',filter_nb_masked);
+        }
       }
 
     getAllUsage=()=>{
@@ -158,7 +170,7 @@ class Map extends React.Component {
   
     render() {    
         const loading= this.state.loading?(<Loading/>):null;
-      return (
+        return (
         <div  ref={el => this.mapContainer = el} >
             {loading}
             <Bar usetypes={Object.keys(this.state.usetypes)} values={Object.keys(this.state.values)} updateValue={this.updateValue} updateUsetype={this.updateUsetype}/>
