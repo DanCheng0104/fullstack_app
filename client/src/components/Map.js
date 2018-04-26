@@ -22,6 +22,7 @@ class Map extends React.Component {
         d3Display:false,
         allData:{},
         chartData : [],
+        layerList:['nb-boundary','nb-boundary-masked','nb-boundary-all'],
         values:{'Total':'usage', 'Median':'usage_med','Median Per sqft':'usage_med_sqft'},
         usetypes:{'All':'all','Commercial':'commercial','Institutional':'institutional','Industrial':'industrial','Mixed Use':'mixed_use','Other':'other','Residential':'res'}
     };
@@ -39,12 +40,21 @@ class Map extends React.Component {
     updateUsetype =(value) =>{
         this.setState({usetype:this.state.usetypes[value]});   
     }
-   updateD3Display = (value) => {
+    updateD3Display = (value) => {
        this.setState({d3Display:value});
-   }
+    }
+
+    addLayer = (id,paint,filter,type) =>{
+        this.map.addLayer({
+            "id": id,
+            "type": type,
+            "source": "base_nb",
+            "paint": paint,
+             "filter":  filter
+          });        
+    }
 
     componentDidMount() {
-
         this.getAllData();
         this.map = new mapboxgl.Map({
             container: this.mapContainer,
@@ -72,32 +82,16 @@ class Map extends React.Component {
                     "type": "geojson",
                     "data": this.state.geos
                 });
-      
-                this.map.addLayer({
-                  "id": "nb-boundary",
-                  "type": "fill",
-                  "source": "base_nb",
-                  "paint": {
-                      "fill-outline-color": "#e1cdb5",
-                      'fill-opacity': 1
-                  },
-                   "filter":  ["all",['==','year',this.state.year],['!=',this.state.value,-9999],['==','usetype',this.state.usetype]] 
-                });    
+                const layerInfo = {
+                    "nb-boundary":{'type':'fill','paint':{"fill-outline-color": "#e1cdb5",'fill-opacity': 1},'filter':["all",['==','year',this.state.year],['!=',this.state.value,-9999],['!=',this.state.value,-8888],['!=',this.state.value,-7777],['==','usetype',this.state.usetype]]},
+                    "nb-boundary-masked":{'type':'fill','paint':{'fill-pattern': 'masked-pattern',"fill-outline-color": "#e1cdb5",'fill-opacity': 0.5},'filter':["all",['==','year',this.state.year],['==',this.state.value,-9999],['==','usetype',this.state.usetype]]},
+                    "nb-boundary-all":{'type':'line','paint':{"line-color": "#e1cdb5"},'filter':["all",['==','year',this.state.year],['==','usetype',this.state.usetype]]} }
+                this.state.layerList.forEach(layer=>{
+                    this.addLayer(layer,layerInfo[layer]['paint'],layerInfo[layer]['filter'],layerInfo[layer]['type']);
+                });
                 this.setFill();
-                this.map.addLayer({
-                    "id": "nb-boundary-masked",
-                    "type": "fill",
-                    "source": "base_nb",
-                    "paint": {
-                        'fill-pattern': 'masked-pattern',
-                        "fill-outline-color": "#e1cdb5",
-                        'fill-opacity': 0.5
-                    },
-                     "filter":  ["all",['==','year',this.state.year],['==',this.state.value,-9999],['==','usetype',this.state.usetype]] 
-                  });                    
                 this.setState({loading:false});
             });
-
 
             this.map.on('click',(e)=>{
                 const features = this.map.queryRenderedFeatures(e.point,{layers:['nb-boundary']});
@@ -131,6 +125,7 @@ class Map extends React.Component {
     }
 
     componentDidUpdate() {
+        const filter = ["all",['==','year',this.state.year],['==','usetype',this.state.usetype]];
         const filter_nb = ["all",['==','year',this.state.year],['!=',this.state.value,-9999],['!=',this.state.value,-8888],['!=',this.state.value,-7777],['==','usetype',this.state.usetype]];
         const filter_nb_masked =   ["all",['==','year',this.state.year],['==',this.state.value,-9999],['==','usetype',this.state.usetype]];  
         if (this.map.getLayer("nb-boundary")){
@@ -139,6 +134,10 @@ class Map extends React.Component {
         }
         if (this.map.getLayer("nb-boundary-masked")){
             this.map.setFilter('nb-boundary-masked',filter_nb_masked);
+        }
+
+        if (this.map.getLayer("nb-boundary-all")){
+            this.map.setFilter('nb-boundary-all',filter);
         }
       }
 

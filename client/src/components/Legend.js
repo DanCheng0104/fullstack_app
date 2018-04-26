@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../css/style.css';
-import {color} from '../label.json'
+import {color} from '../label.json';
+import mask from '../images/masked-pattern.svg';
 
 class Legend extends Component {
     handlerChange(e,year,direction){
@@ -28,6 +29,13 @@ class Legend extends Component {
             </div>
             <div className = "LegendItems">
                 {listItems}
+                <div className="legendContainer">
+                    <span className="mask"></span><div className="legendTag">Masked</div>
+                </div>
+                <div className="legendContainer">
+                    <span style={{'border': '2px solid #e1cdb5'}}></span><div className="legendTag">Not Available</div>
+                </div>
+                
             </div>
         </div>
         );
