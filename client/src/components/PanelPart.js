@@ -44,7 +44,7 @@ class PanelPart extends Component {
     return (      
       <div className='bot-bar' ref={this.panelRef}>
           {arrow}
-          <BarChart ref = {this.barRef} chartData = {this.props.chartData} d3Display = {this.props.d3Display} updateD3Display = {this.props.updateD3Display}/>
+          <BarChart ref = {this.barRef} chartData = {this.props.chartData} d3Display = {this.props.d3Display} updateD3Display = {this.props.updateD3Display} usetype={this.props.usetype}/>
       </div>
 
       

@@ -99,9 +99,11 @@ class Map extends React.Component {
                     this.updateBar(true);
                     let data = [];
                     const id = features[0].properties.id;
-                    const usetypes = ["commercial","institutional","other","industrial","res","mixed_use"];
+                    let usetypes;
+                    if (this.state.usetype == 'all') { usetypes = ["commercial","institutional","other","industrial","res","mixed_use"];}     
+                    else {usetypes = [this.state.usetype]}            
                     const years = [2011,2012,2013,2014,2015,2016];
-                    let tempData = {"commercial":[],"institutional":[],"other":[],"industrial":[],"res":[],"mixed_use":[]};
+                    // let tempData = {"commercial":[],"institutional":[],"other":[],"industrial":[],"res":[],"mixed_use":[]};
                     years.forEach((year)=>{
                         let item = {};
                         item['year'] = year;
@@ -174,7 +176,7 @@ class Map extends React.Component {
             {loading}
             <Bar usetypes={Object.keys(this.state.usetypes)} values={Object.keys(this.state.values)} updateValue={this.updateValue} updateUsetype={this.updateUsetype}/>
             <Legend year ={this.state.year} updateYear={this.updateYear} usetype={this.state.usetype} value={this.state.value}/> 
-            <PanelPart barDisplay={this.state.barDisplay} d3Display={this.state.d3Display} updateD3Display={this.updateD3Display} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData}/>
+            <PanelPart barDisplay={this.state.barDisplay} d3Display={this.state.d3Display} updateD3Display={this.updateD3Display} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData} usetype = {this.state.usetype}/>
         </div>
 
       )

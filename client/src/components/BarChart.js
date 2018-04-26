@@ -28,33 +28,38 @@ class BarChart extends Component {
     const node = this.node;
     var s = d3.selectAll('svg');
     s.remove();
-    
-    //onst data = Object.assign({},this.props.chartData);
     let data = this.props.chartData.slice(0);
+    let keys;
+    keys = (this.props.usetype === 'all')?[ "res","commercial", "institutional", "other",'mixed_use','industrial','masked']:[this.props.usetype];
+    const colors ={"res":'#4daf4a',"commercial":'#377eb8',"institutional":'#e41a1c',"other":'#984ea3','mixed_use':'#ffff33','industrial':'#ff7f00','masked':'url(#diagonal-stripe-1)'};
+    this.createStackChart(node,data,keys,colors);
     // add function
+  }
+
+  createStackChart =(node,data,keys,colors) =>{
     if (data[0]['masked'] === undefined){
-        data = this.fillMaskValues(data);
+        data = this.fillMaskValues(data,keys);
     }
+    if (keys.length===1) {keys.push('masked');}
     const series = d3.stack()
-          .keys([ "res","commercial", "institutional", "other",'mixed_use','industrial','masked'])
+          .keys(keys)
           .offset(d3.stackOffsetDiverging)
           (data);
 
     const margin = {top: 20, right: 30, bottom: 30, left: 60};
     const width = this.node.offsetWidth/2;
     const height = this.node.offsetHeight+60;
-
       
     const x = d3.scaleBand()
           .domain(data.map(function(d) { return d.year; }))
           .rangeRound([margin.left, width - margin.right])
           .padding(0.1);
-      
+
     const y = d3.scaleLinear()
           .domain([d3.min(series, this.stackMin), d3.max(series, this.stackMax)])
           .rangeRound([height - margin.bottom, margin.top]);
       
-    const colors ={"res":'#4daf4a',"commercial":'#377eb8',"institutional":'#e41a1c',"other":'#984ea3','mixed_use':'#ffff33','industrial':'#ff7f00','masked':'url(#diagonal-stripe-1)'};
+    
     const svg = select(node).append('svg')
     .attr("viewBox", `0 0 ${width} ${height}`)
     .attr('preserveAspectRatio','xMinYMin');
@@ -98,7 +103,7 @@ class BarChart extends Component {
     .ticks(5, "s"));
     
 
-}
+  }
 
    stackMin = (serie) =>{
     return d3.min(serie, function(d) { return d[0]; });
@@ -108,31 +113,48 @@ class BarChart extends Component {
     return d3.max(serie, function(d) { return d[1]; });
   }
 
-   fillMaskValues = (data) =>{
-    const defaultUsetypes = ["commercial","institutional","other","industrial","res","mixed_use"];
-    let maxValues ={};
-    let maskedValues ={};
-    data.forEach(item=>{
-        let cloneItem = Object.assign({},item);
-        delete cloneItem.year;
-        maxValues[item.year]=(this.sumValues(cloneItem));
-        defaultUsetypes.forEach((usetype,index)=>{
-            if (!Object.keys(cloneItem).includes(usetype)) {
-                item[usetype] = 0;
+   fillMaskValues = (data,defaultUsetypes) =>{
+    if (defaultUsetypes.length==1){
+        let maxValue=0;
+        let value;
+        data.forEach(item=>{
+            if(item[defaultUsetypes[0]] !== undefined){
+                value = item[defaultUsetypes[0]];
+                maxValue= (maxValue<value)?value:maxValue;
             }
         })
-    })
-    if (Object.keys(maxValues).length >0) {
-        const maxValue = Math.max(...Object.values(maxValues))+100;
-        Object.keys(maxValues).forEach((key)=>{
-            maskedValues[key] = maxValue - maxValues[key];
+        data.forEach(item=>{
+            if(item[defaultUsetypes[0]] === undefined){
+                item["masked"] =maxValue;
+            }
+        })
+    }
+    else {
+        let maxValues ={};
+        let maskedValues ={};
+        data.forEach(item=>{
+            let cloneItem = Object.assign({},item);
+            delete cloneItem.year;
+            maxValues[item.year]=(this.sumValues(cloneItem));
+            defaultUsetypes.forEach((usetype,index)=>{
+                if (!Object.keys(cloneItem).includes(usetype)) {
+                    item[usetype] = 0;
+                }
+            })
+        })
+        if (Object.keys(maxValues).length >0) {
+            const maxValue = Math.max(...Object.values(maxValues))+100;
+            Object.keys(maxValues).forEach((key)=>{
+                maskedValues[key] = maxValue - maxValues[key];
+    
+            });
+        };
+    
+        data.forEach(item=>{
+            item["masked"] = maskedValues[item.year]
+        })
+    }
 
-        });
-    };
-
-    data.forEach(item=>{
-        item["masked"] = maskedValues[item.year]
-    })
     return data;
    }
     
