@@ -109,9 +109,9 @@ class Map extends React.Component {
                         item['year'] = year;
                         usetypes.forEach((usetype)=>{
                             this.state.allData.features.forEach((feature)=>{
-                                if (feature.properties.id== id & feature.properties.year == year & feature.properties.usetype == usetype & ![-7777,-8888,-9999].includes(feature.properties.usage)){
+                                if (feature.properties.id== id & feature.properties.year == year & feature.properties.usetype == usetype & ![-7777,-8888,-9999].includes(feature.properties[this.state.value])){
                                 let usage;
-                                usage = feature.properties.usage;
+                                usage = feature.properties[this.state.value];
                                 item[usetype] = usage;         
                                 }
                             });

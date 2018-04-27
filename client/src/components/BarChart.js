@@ -91,7 +91,9 @@ class BarChart extends Component {
     .attr("width", x.bandwidth)
     .attr("x", function(d) { return x(d.data.year); })
     .attr("y", function(d) { return y(d[1]); })
-    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+    .attr("height", function(d) { 
+        return y(d[0]) - y(d[1]); 
+    })
       
     svg.append("g")
     .attr("transform", "translate(0," + y(0) + ")")
@@ -100,7 +102,8 @@ class BarChart extends Component {
     svg.append("g")
     .attr("transform", "translate(" + margin.left + ",0)")
     .call(d3.axisLeft(y)
-    .ticks(5, "s"));
+    // .ticks(5, "s"));
+    .ticks(5, ".3f"));
     
 
   }
