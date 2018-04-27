@@ -144,10 +144,13 @@ class BarChart extends Component {
     else {
         let maxValues ={};
         let maskedValues ={};
+        let max = 0;
         data.forEach(item=>{
             let cloneItem = Object.assign({},item);
             delete cloneItem.year;
-            maxValues[item.year]=(this.sumValues(cloneItem));
+            maxValues[item.year]={};
+            maxValues[item.year]['value']=(this.sumValues(cloneItem));
+            maxValues[item.year]['count'] = Object.keys(item).length-1;
             defaultUsetypes.forEach((usetype,index)=>{
                 if (!Object.keys(cloneItem).includes(usetype)) {
                     item[usetype] = 0;
@@ -155,10 +158,14 @@ class BarChart extends Component {
             })
         })
         if (Object.keys(maxValues).length >0) {
-            const maxValue = Math.max(...Object.values(maxValues))+0.2*Math.max(...Object.values(maxValues));
+           // const maxValue = Math.max(...Object.values(maxValues))+0.2*Math.max(...Object.values(maxValues));         
             Object.keys(maxValues).forEach((key)=>{
-                maskedValues[key] = maxValue - maxValues[key];
-    
+                max = (max < maxValues[key]['value']? maxValues[key]['value']: max);
+            });
+            const flag = Object.keys(maxValues).find(key => maxValues[key]['count'] === 6);
+            if (!Boolean(flag)) {max = 1.15* max;}
+            Object.keys(maxValues).forEach((key)=>{
+               maskedValues[key] = (maxValues[key]['count']===6)?null:max - maxValues[key]['value'];
             });
         };
     
