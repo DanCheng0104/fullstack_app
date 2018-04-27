@@ -176,7 +176,7 @@ class Map extends React.Component {
             {loading}
             <Bar usetypes={Object.keys(this.state.usetypes)} values={Object.keys(this.state.values)} updateValue={this.updateValue} updateUsetype={this.updateUsetype}/>
             <Legend year ={this.state.year} updateYear={this.updateYear} usetype={this.state.usetype} value={this.state.value}/> 
-            <PanelPart barDisplay={this.state.barDisplay} d3Display={this.state.d3Display} updateD3Display={this.updateD3Display} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData} usetype = {this.state.usetype}/>
+            <PanelPart barDisplay={this.state.barDisplay} d3Display={this.state.d3Display} updateD3Display={this.updateD3Display} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData} usetype = {this.state.usetype} value = {this.state.value}/>
         </div>
 
       )

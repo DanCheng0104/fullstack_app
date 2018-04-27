@@ -98,12 +98,21 @@ class BarChart extends Component {
     svg.append("g")
     .attr("transform", "translate(0," + y(0) + ")")
     .call(d3.axisBottom(x));
-                
-    svg.append("g")
-    .attr("transform", "translate(" + margin.left + ",0)")
-    .call(d3.axisLeft(y)
-    // .ticks(5, "s"));
-    .ticks(5, ".3f"));
+
+    if (this.props.value === 'usage_med_sqft'){
+        svg.append("g")
+        .attr("transform", "translate(" + margin.left + ",0)")
+        .call(d3.axisLeft(y)
+        .ticks(5, ".3f"));    
+    }
+    else{
+        svg.append("g")
+        .attr("transform", "translate(" + margin.left + ",0)")
+        .call(d3.axisLeft(y)
+        .ticks(5, "s"));
+        
+        
+    }
     
 
   }
@@ -146,7 +155,7 @@ class BarChart extends Component {
             })
         })
         if (Object.keys(maxValues).length >0) {
-            const maxValue = Math.max(...Object.values(maxValues))+100;
+            const maxValue = Math.max(...Object.values(maxValues))+0.2*Math.max(...Object.values(maxValues));
             Object.keys(maxValues).forEach((key)=>{
                 maskedValues[key] = maxValue - maxValues[key];
     
