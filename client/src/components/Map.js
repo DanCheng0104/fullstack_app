@@ -132,7 +132,7 @@ class Map extends React.Component {
         const filter_nb_masked =   ["all",['==','year',this.state.year],['==',this.state.value,-9999],['==','usetype',this.state.usetype]];  
         if (this.map.getLayer("nb-boundary")){
             this.map.setFilter('nb-boundary',filter_nb);
-            this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.value][this.state.usetype]);
+            this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.usetype][this.state.value]);
         }
         if (this.map.getLayer("nb-boundary-masked")){
             this.map.setFilter('nb-boundary-masked',filter_nb_masked);
@@ -163,7 +163,7 @@ class Map extends React.Component {
         });
     }
     setFill =() =>{
-        this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.value][this.state.usetype]);
+        this.map.setPaintProperty("nb-boundary",'fill-color',color[this.state.usetype][this.state.value]);
     }
     componentWillUnmount() {
       this.map.remove();

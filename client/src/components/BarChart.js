@@ -31,7 +31,7 @@ class BarChart extends Component {
     let data = this.props.chartData.slice(0);
     let keys;
     keys = (this.props.usetype === 'all')?[ "res","commercial", "institutional", "other",'mixed_use','industrial','masked']:[this.props.usetype];
-    const colors ={"res":'#4daf4a',"commercial":'#377eb8',"institutional":'#e41a1c',"other":'#984ea3','mixed_use':'#ffff33','industrial':'#ff7f00','masked':'url(#diagonal-stripe-1)'};
+    const colors ={"res":'#DA77F2',"commercial":'#A9E34B',"institutional":'#9775FA',"other":'#38D9A9','mixed_use':'#FF8787','industrial':'#FFA94D','masked':'url(#diagonal-stripe-1)'};
     this.createStackChart(node,data,keys,colors);
     // add function
   }

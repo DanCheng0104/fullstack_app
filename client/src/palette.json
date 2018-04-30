@@ -1,227 +1,230 @@
-{"color":{
-    "usage":{
+
+{
+    "color":{
         "all":{
-            "property": "usage",
-            "stops": [
-              [698949,"#edf8fb"],
-              [1301757,"#b2e2e2"],
-              [2170008,"#66c2a4"],
-              [3554958,"#2ca25f"],
-              [8550866,"#006d2c"]
-            ]
+            "usage":{
+                "property": "usage",
+                "stops": [
+                  [698949,"#E8F7FF"],
+                  [1301757,"#A3DAFF"],
+                  [2170008,"#4DADF7"],
+                  [3554958,"#228AE6"],
+                  [8550866,"#1B6EC2"]
+                ]
+            },
+            "usage_med":{
+                "property": "usage_med",
+                "stops": [
+                  [149,"#E8F7FF"],
+                  [211,"#A3DAFF"],
+                  [357,"#4DADF7"],
+                  [21401,"#228AE6"],
+                  [220268,"#1B6EC2"]
+                ]
+            },
+            "usage_med_sqft":{
+                "property": "usage_med_sqft",
+                "stops": [
+                  [0.074,"#E8F7FF"],
+                  [0.093,"#A3DAFF"],
+                  [0.137,"#4DADF7"],
+                  [0.321,"#228AE6"],
+                  [0.861,"#1B6EC2"]
+                ]
+            }
         },
         "commercial":{
-            "property": "usage",
-            "stops": [
-              [174580,"#edf8fb"],
-              [345213,"#b2e2e2"],
-              [531000,"#66c2a4"],
-              [1010455,"#2ca25f"],
-              [2623990,"#006d2c"]
-            ]
-
+            "usage":{
+                "property": "usage",
+                "stops": [
+                  [174580,"#F4FCE3"],
+                  [345213,"#D8F5A2"],
+                  [531000,"#A9E34B"],
+                  [1010455,"#82C91E"],
+                  [2623990,"#66A80F"]
+                ]
+            },
+            "usage_med":{
+                "property": "usage_med",
+                "stops": [
+                  [152,"#F4FCE3"],
+                  [246,"#D8F5A2"],
+                  [380,"#A9E34B"],
+                  [877,"#82C91E"],
+                  [2539,"#66A80F"]
+                ]              
+            },
+            "usage_med_sqft":{
+                "property": "usage_med_sqft",
+                "stops": [
+                    [0.034,"#F4FCE3"],
+                    [0.047,"#D8F5A2"],
+                    [0.061,"#A9E34B"],
+                    [0.078,"#82C91E"],
+                    [0.259,"#66A80F"]
+                ]                           
+           }
         },
         "institutional":{
-            "property": "usage",
-            "stops": [
-              [57483,"#edf8fb"],
-              [110038,"#b2e2e2"],
-              [173129,"#66c2a4"],
-              [277714,"#2ca25f"],
-              [620214,"#006d2c"]
-            ]
-            
+            "usage":{
+                "property": "usage",
+                "stops": [
+                    [57483,"#F3F0FF"],
+                    [110038,"#D0BFFF"],
+                    [173129,"#9775FA"],
+                    [277714,"#7950F2"],
+                    [620214,"#6741D9"]
+                ]
+            },
+            "usage_med":{
+                "property": "usage_med",
+                "stops": [
+                  [419,"#F3F0FF"],
+                  [881,"#D0BFFF"],
+                  [1556,"#9775FA"],
+                  [3332,"#7950F2"],
+                  [14370,"#6741D9"]
+                ]          
+            },
+            "usage_med_sqft":{
+                "property": "usage_med_sqft",
+                "stops": [
+                  [0.032,"#F3F0FF"],
+                  [0.050,"#D0BFFF"],
+                  [0.072,"#9775FA"],
+                  [0.102,"#7950F2"],
+                  [0.214,"#6741D9"]
+                ]                             
+           }
         },
         "other":{
-            "property": "usage",
-            "stops": [
-              [33822,"#edf8fb"],
-              [64604,"#b2e2e2"],
-              [83707,"#66c2a4"],
-              [143931,"#2ca25f"],
-              [860544,"#006d2c"]
-            ]
+            "usage":{
+                "property": "usage",
+                "stops": [
+                    [33822,"#E6FCF5"],
+                    [64604,"#96F2D7"],
+                    [83707,"#38D9A9"],
+                    [143931,"#12B886"],
+                    [860544,"#099268"]
+                ]
+            },
+            "usage_med":{
+                "property": "usage_med",
+                "stops": [
+                    [591,"#E6FCF5"],
+                    [1418,"#96F2D7"],
+                    [4195,"#38D9A9"],
+                    [10568,"#12B886"],
+                    [25911,"#099268"]
+                  ]           
+            },
+            "usage_med_sqft":{
+                "property": "usage_med_sqft",
+                "stops": [
+                    [0.050,"#E6FCF5"],
+                    [0.101,"#96F2D7"],
+                    [0.199,"#38D9A9"],
+                    [1.201,"#12B886"],
+                    [5.215,"#099268"]
+                ]                           
+           }            
         },
         "industrial":{
-            "property": "usage",
-            "stops": [
-              [41588,"#edf8fb"],
-              [110360,"#b2e2e2"],
-              [235685,"#66c2a4"],
-              [447414,"#2ca25f"],
-              [1089199,"#006d2c"]
-            ]
+            "usage":{
+                "property": "usage",
+                "stops": [
+                    [41588,"#FFF4E6"],
+                    [110360,"#FFD8A8"],
+                    [235685,"#FFA94D"],
+                    [447414,"#FD7E14"],
+                    [1089199,"#E8590C"]
+                ]
+            },
+            "usage_med":{
+                "property": "usage_med",
+                "stops": [
+                    [200,"#FFF4E6"],
+                    [451,"#FFD8A8"],
+                    [1247,"#FFA94D"],
+                    [2916,"#FD7E14"],
+                    [92564,"#E8590C"]
+                  ]           
+            },
+            "usage_med_sqft":{
+                "property": "usage_med_sqft",
+                "stops": [
+                    [0.015,"#FFF4E6"],
+                    [0.028,"#FFD8A8"],
+                    [0.054,"#FFA94D"],
+                    [0.573,"#FD7E14"],
+                    [6.779,"#E8590C"]
+                ]                           
+           }                
         },
         "res":{
-            "property": "usage",
-            "stops": [
-              [568703,"#edf8fb"],
-              [1057991,"#b2e2e2"],
-              [1822728,"#66c2a4"],
-              [3122708,"#2ca25f"],
-              [6535096,"#006d2c"]
-            ]
+            "usage":{
+                "property": "usage",
+                "stops": [
+                    [568703,"#F8F0FC"],
+                    [1057991,"#EEBEFA"],
+                    [1822728,"#DA77F2"],
+                    [3122708,"#BE4BDB"],
+                    [6535096,"#9C36B5"]
+                ]
+            },
+            "usage_med":{
+                "property": "usage_med",
+                "stops": [
+                    [152,"#F8F0FC"],
+                    [214,"#EEBEFA"],
+                    [289,"#DA77F2"],
+                    [381,"#BE4BDB"],
+                    [16752,"#9C36B5"]
+                  ]           
+            },
+            "usage_med_sqft":{
+                "property": "usage_med_sqft",
+                "stops": [
+                    [0.071,"#F8F0FC"],
+                    [0.084,"#EEBEFA"],
+                    [0.095,"#DA77F2"],
+                    [0.106,"#BE4BDB"],
+                    [4.273,"#9C36B5"]
+                ]                           
+           }              
         },
         "mixed_use":{
-            "property": "usage",
-            "stops": [
-                [2177,"#edf8fb"],
-                [14094,"#b2e2e2"],
-                [35422,"#66c2a4"],
-                [78681,"#2ca25f"],
-                [272456,"#006d2c"]
-            ]
+            "usage":{
+                "property": "usage",
+                "stops": [
+                    [2177,"#FFF5F5"],
+                    [14094,"#FFC9C9"],
+                    [35422,"#FF8787"],
+                    [78681,"#FA5252"],
+                    [272456,"#E03131"]
+                ]
+            },
+            "usage_med":{
+                "property": "usage_med",
+                "stops": [
+                    [1919,"#FFF5F5"],
+                    [4317,"#FFC9C9"],
+                    [7097,"#FF8787"],
+                    [11820,"#FA5252"],
+                    [51042,"#E03131"]
+                  ]           
+            },
+            "usage_med_sqft":{
+                "property": "usage_med_sqft",
+                "stops": [
+                    [0.034,"#FFF5F5"],
+                    [0.055,"#FFC9C9"],
+                    [0.075,"#FF8787"],
+                    [0.117,"#FA5252"],
+                    [0.216,"#E03131"]
+                ]                           
+           }    
         }
-    },
-    "usage_med":{
-        "all":{
-            "property": "usage_med",
-            "stops": [
-              [149,"#ffffcc"],
-              [211,"#a1dab4"],
-              [357,"#41b6c4"],
-              [21401,"#2c7fb8"],
-              [220268,"#253494"]
-            ]
-        },
-        "commercial":{
-            "property": "usage_med",
-            "stops": [
-              [152,"#ffffcc"],
-              [246,"#a1dab4"],
-              [380,"#41b6c4"],
-              [877,"#2c7fb8"],
-              [2539,"#253494"]
-            ]
+    }
 
-        },
-        "institutional":{
-            "property": "usage_med",
-            "stops": [
-              [419,"#ffffcc"],
-              [881,"#a1dab4"],
-              [1556,"#41b6c4"],
-              [3332,"#2c7fb8"],
-              [14370,"#253494"]
-            ]
-            
-        },
-        "other":{
-            "property": "usage_med",
-            "stops": [
-              [591,"#ffffcc"],
-              [1418,"#a1dab4"],
-              [4195,"#41b6c4"],
-              [10568,"#2c7fb8"],
-              [25911,"#253494"]
-            ]
-        },
-        "industrial":{
-            "property": "usage_med",
-            "stops": [
-              [200,"#ffffcc"],
-              [451,"#a1dab4"],
-              [1247,"#41b6c4"],
-              [2916,"#2c7fb8"],
-              [92564,"#253494"]
-            ]
-        },
-        "res":{
-            "property": "usage_med",
-            "stops": [
-              [152,"#ffffcc"],
-              [214,"#a1dab4"],
-              [289,"#41b6c4"],
-              [381,"#2c7fb8"],
-              [16752,"#253494"]
-            ]
-        },
-        "mixed_use":{
-            "property": "usage_med",
-            "stops": [
-                [1919,"#ffffcc"],
-                [4317,"#a1dab4"],
-                [7097,"#41b6c4"],
-                [11820,"#2c7fb8"],
-                [51042,"#253494"]
-            ]
-        }
-
-    },
-    "usage_med_sqft":{
-        "all":{
-            "property": "usage_med_sqft",
-            "stops": [
-              [0.074,"#f1eef6"],
-              [0.093,"#d7b5d8"],
-              [0.137,"#df65b0"],
-              [0.321,"#dd1c77"],
-              [0.861,"#980043"]
-            ]
-        },
-        "commercial":{
-            "property": "usage_med_sqft",
-            "stops": [
-              [0.034,"#f1eef6"],
-              [0.047,"#d7b5d8"],
-              [0.061,"#df65b0"],
-              [0.078,"#dd1c77"],
-              [0.259,"#980043"]
-            ]
-
-        },
-        "institutional":{
-            "property": "usage_med_sqft",
-            "stops": [
-              [0.032,"#f1eef6"],
-              [0.050,"#d7b5d8"],
-              [0.072,"#df65b0"],
-              [0.102,"#dd1c77"],
-              [0.214,"#980043"]
-            ]
-            
-        },
-        "other":{
-            "property": "usage_med_sqft",
-            "stops": [
-              [0.050,"#f1eef6"],
-              [0.101,"#d7b5d8"],
-              [0.199,"#df65b0"],
-              [1.201,"#dd1c77"],
-              [5.215,"#980043"]
-            ]
-        },
-        "industrial":{
-            "property": "usage_med_sqft",
-            "stops": [
-              [0.015,"#f1eef6"],
-              [0.028,"#d7b5d8"],
-              [0.054,"#df65b0"],
-              [0.573,"#dd1c77"],
-              [6.779,"#980043"]
-            ]
-        },
-        "res":{
-            "property": "usage_med_sqft",
-            "stops": [
-              [0.071,"#f1eef6"],
-              [0.084,"#d7b5d8"],
-              [0.095,"#df65b0"],
-              [0.106,"#dd1c77"],
-              [4.273,"#980043"]
-            ]
-        },
-        "mixed_use":{
-            "property": "usage_med_sqft",
-            "stops": [
-                [0.034,"#f1eef6"],
-                [0.055,"#d7b5d8"],
-                [0.075,"#df65b0"],
-                [0.117,"#dd1c77"],
-                [0.216,"#980043"]
-            ]
-        }
-
-    }         
-}
 }
