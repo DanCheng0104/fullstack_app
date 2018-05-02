@@ -94,7 +94,20 @@ class BarChart extends Component {
     .attr("height", function(d) { 
         return y(d[0]) - y(d[1]); 
     })
-      
+    .on("mouseover", function() { tooltip.style("display", null); })
+    .on("mouseout", function() { tooltip.style("display", null); })
+    .on("mousemove", function(d) {
+      const xPosition = d3.mouse(this)[0] - 5;
+      const yPosition = d3.mouse(this)[1] - 5;
+      tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+      const thisName = d3.select(this.parentNode).datum().key;
+      const thisValue = d.data[thisName];
+    //   tooltip.select("text").append('tspan').text('res').append('tspan').text('re');
+     // tooltip.select("text").text(`${thisName}:${thisValue} HCF`);
+     ts1.text(`${thisName}`);
+     ts2.text(`${thisValue}`);
+    });
+
     svg.append("g")
     .attr("transform", "translate(0," + y(0) + ")")
     .call(d3.axisBottom(x));
@@ -109,11 +122,30 @@ class BarChart extends Component {
         svg.append("g")
         .attr("transform", "translate(" + margin.left + ",0)")
         .call(d3.axisLeft(y)
-        .ticks(5, "s"));
-        
-        
+        .ticks(5, "s"));          
     }
-    
+  // Prep the tooltip bits, initial display is hidden
+  var tooltip = svg.append("g")
+    .attr("class", "tooltip")
+    .style("display", "none");
+      
+  tooltip.append("rect")
+    .attr("width", 80)
+    .attr("height", 35)
+    .attr("fill", "black")
+    .style("opacity", 0.5);
+
+  var text_node = tooltip.append("text")
+    .attr("x", 30)
+    .attr("dy", "1.2em")
+    .style("text-anchor", "middle")
+    .attr("font-size", "12px")
+    .attr("font-weight", "bold");    
+
+  var ts1 = text_node.append('tspan')
+        .attr('dy', '.5em')
+  var ts2 =  text_node.append('tspan')
+        .attr('dy', '.9em')
 
   }
 
