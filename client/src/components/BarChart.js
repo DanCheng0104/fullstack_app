@@ -94,9 +94,9 @@ class BarChart extends Component {
     .attr("height", function(d) { 
         return y(d[0]) - y(d[1]); 
     })
-    .on("mouseover", function() { tooltip.style("display", null); })
-    .on("mouseout", function() { tooltip.style("display", null); })
-    .on("mousemove", function(d) {
+    .on("mouseover", () =>{ tooltip.style("display", null); })
+    .on("mouseout", () =>{ tooltip.style("display", null); })
+    .on("mousemove", function(d){
       const xPosition = d3.mouse(this)[0];
       const yPosition = d3.mouse(this)[1];
       tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
@@ -104,8 +104,15 @@ class BarChart extends Component {
       const thisValue = d.data[thisName];
 
       ts1.text(`${thisName}`);
+      if (thisValue < 1 & thisName !== 'masked'){
+         ts2.text(d3.format(",.3f")(thisValue) + ' HCF');
+      }
+      else if (thisName !== 'masked'){
+        ts2.text(d3.format(",.2s")(thisValue) + ' HCF'); 
+      }
+      else {ts2.text('');}
     
-      (thisName !== 'masked')?ts2.text(d3.format(",.2s")(thisValue) + ' HCF'):ts2.text('');
+      //(thisName !== 'masked')?ts2.text(d3.format(",.2s")(thisValue) + ' HCF'):ts2.text('');
      
     });
 
