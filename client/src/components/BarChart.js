@@ -47,7 +47,7 @@ class BarChart extends Component {
           (data);
 
     const margin = {top: 20, right: 30, bottom: 30, left: 60};
-    const width = this.node.offsetWidth/2;
+    const width = this.node.offsetWidth*1.2;
     const height = this.node.offsetHeight+60;
       
     const x = d3.scaleBand()
@@ -69,7 +69,7 @@ class BarChart extends Component {
     .attr("width", 10)
     .attr("height", 8)
     .attr('patternUnits',"userSpaceOnUse")
-    .attr('patternTransform','rotate(45)')
+    .attr('patternTransform','rotate(-45)')
     .append('rect')
     .attr("width","8")
     .attr("height","1")
@@ -220,7 +220,7 @@ class BarChart extends Component {
     return (
         <div className = 'bar_summary'>
             <div className = 'bar' ref={node => this.node = node}></div>
-            {/* <div className = 'summary'>summary</div> */}
+            <div className = 'summary'>Summary</div>
         </div>
       )
     }
