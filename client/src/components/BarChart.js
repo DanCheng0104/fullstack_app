@@ -97,15 +97,16 @@ class BarChart extends Component {
     .on("mouseover", function() { tooltip.style("display", null); })
     .on("mouseout", function() { tooltip.style("display", null); })
     .on("mousemove", function(d) {
-      const xPosition = d3.mouse(this)[0] - 5;
-      const yPosition = d3.mouse(this)[1] - 5;
+      const xPosition = d3.mouse(this)[0];
+      const yPosition = d3.mouse(this)[1];
       tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
       const thisName = d3.select(this.parentNode).datum().key;
       const thisValue = d.data[thisName];
-    //   tooltip.select("text").append('tspan').text('res').append('tspan').text('re');
-     // tooltip.select("text").text(`${thisName}:${thisValue} HCF`);
-     ts1.text(`${thisName}`);
-     ts2.text(`${thisValue}`);
+
+      ts1.text(`${thisName}`);
+    
+      (thisName !== 'masked')?ts2.text(d3.format(",.2s")(thisValue) + ' HCF'):ts2.text('');
+     
     });
 
     svg.append("g")
@@ -124,7 +125,7 @@ class BarChart extends Component {
         .call(d3.axisLeft(y)
         .ticks(5, "s"));          
     }
-  // Prep the tooltip bits, initial display is hidden
+    // Prep the tooltip bits, initial display is hidden
   var tooltip = svg.append("g")
     .attr("class", "tooltip")
     .style("display", "none");
@@ -132,8 +133,8 @@ class BarChart extends Component {
   tooltip.append("rect")
     .attr("width", 80)
     .attr("height", 35)
-    .attr("fill", "black")
-    .style("opacity", 0.5);
+    .attr("fill", "#FEF7FF");
+    // .style("opacity", 0.8);
 
   var text_node = tooltip.append("text")
     .attr("x", 30)
@@ -143,10 +144,11 @@ class BarChart extends Component {
     .attr("font-weight", "bold");    
 
   var ts1 = text_node.append('tspan')
-        .attr('dy', '.5em')
+        .attr('dy', '.8em')
+        .attr('x',40)
   var ts2 =  text_node.append('tspan')
-        .attr('dy', '.9em')
-
+        .attr('dy', '1.1em')
+        .attr('x',40)
   }
 
    stackMin = (serie) =>{
@@ -189,8 +191,7 @@ class BarChart extends Component {
                 }
             })
         })
-        if (Object.keys(maxValues).length >0) {
-           // const maxValue = Math.max(...Object.values(maxValues))+0.2*Math.max(...Object.values(maxValues));         
+        if (Object.keys(maxValues).length >0) {     
             Object.keys(maxValues).forEach((key)=>{
                 max = (max < maxValues[key]['value']? maxValues[key]['value']: max);
             });
