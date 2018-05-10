@@ -40,7 +40,8 @@ class PanelPart extends Component {
 
   render() {      
       // const barChart = this.props.barDisplay ? (<BarChart chartData = {this.props.chartData} d3Display = {this.props.d3Display} updateD3Display = {this.props.updateD3Display}/>):null;
-      const arrow = this.props.barDisplay ? (<span className="glyphicon glyphicon-chevron-down"  ref={ss => this.ss = ss} onClick={(e)=>this.ArrowChange(e)}></span>):(<span className="glyphicon glyphicon-chevron-up" ref={ss => this.ss = ss} onClick={(e)=>this.ArrowChange(e)}></span>);
+      //const arrow = this.props.barDisplay ? (<span className="glyphicon glyphicon-chevron-down"  ref={ss => this.ss = ss} onClick={(e)=>this.ArrowChange(e)}></span>):(<span className="glyphicon glyphicon-chevron-up" ref={ss => this.ss = ss} onClick={(e)=>this.ArrowChange(e)}></span>);
+      const arrow = this.props.barDisplay ? (<div className = 'toplevel'><span className="glyphicon glyphicon-chevron-down"  onClick={(e)=>this.ArrowChange(e)}></span></div>):(<div className = 'toplevel'><span className="glyphicon glyphicon-chevron-up"  onClick={(e)=>this.ArrowChange(e)}></span></div>);
     return (      
       <div className='bot-bar' ref={this.panelRef}>
           {arrow}
