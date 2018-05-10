@@ -22,7 +22,7 @@ class Map extends React.Component {
         d3Display:false,
         allData:{},
         chartData : [],
-        layerList:['nb-boundary','nb-boundary-masked','nb-boundary-all'],
+        layerList:['nb-boundary','nb-boundary-masked','nb-boundary-all','nb-boundary-highlight'],
         values:{'Total':'usage', 'Median':'usage_med','Median Per sqft':'usage_med_sqft'},
         usetypes:{'All':'all','Commercial':'commercial','Institutional':'institutional','Industrial':'industrial','Mixed Use':'mixed_use','Other':'other','Residential':'res'}
     };
@@ -85,7 +85,8 @@ class Map extends React.Component {
                 const layerInfo = {
                     "nb-boundary":{'type':'fill','paint':{"fill-outline-color": "#e1cdb5",'fill-opacity': 1},'filter':["all",['==','year',this.state.year],['!=',this.state.value,-9999],['!=',this.state.value,-8888],['!=',this.state.value,-7777],['==','usetype',this.state.usetype]]},
                     "nb-boundary-masked":{'type':'fill','paint':{'fill-pattern': 'masked-pattern',"fill-outline-color": "#e1cdb5",'fill-opacity': 0.5},'filter':["all",['==','year',this.state.year],['==',this.state.value,-9999],['==','usetype',this.state.usetype]]},
-                    "nb-boundary-all":{'type':'line','paint':{"line-color": "#e1cdb5"},'filter':["all",['==','year',this.state.year],['==','usetype',this.state.usetype]]} }
+                    "nb-boundary-all":{'type':'line','paint':{"line-color": "#e1cdb5"},'filter':["all",['==','year',this.state.year],['==','usetype',this.state.usetype]]},
+                    "nb-boundary-highlight" : {'type':'line','paint':{"line-color": "#627BC1","line-width": 2},'filter':["all",['==','year',2014],['==','usetype','all'],['==','id','']]}}
                 this.state.layerList.forEach(layer=>{
                     this.addLayer(layer,layerInfo[layer]['paint'],layerInfo[layer]['filter'],layerInfo[layer]['type']);
                 });
@@ -95,10 +96,12 @@ class Map extends React.Component {
 
             this.map.on('click',(e)=>{
                 const features = this.map.queryRenderedFeatures(e.point,{layers:['nb-boundary']});
+
                 if (features.length>0){
                     this.updateBar(true);
                     let data = [];
                     const id = features[0].properties.id;
+                    this.map.setFilter('nb-boundary-highlight',["all",['==','year',2014],['==','usetype','all'],['==','id',id]]);                    
                     let usetypes;
                     if (this.state.usetype == 'all') { usetypes = ["commercial","institutional","other","industrial","res","mixed_use"];}     
                     else {usetypes = [this.state.usetype]}            

@@ -111,8 +111,7 @@ class BarChart extends Component {
         ts2.text(d3.format(",.2s")(thisValue) + ' HCF'); 
       }
       else {ts2.text('');}
-    
-      //(thisName !== 'masked')?ts2.text(d3.format(",.2s")(thisValue) + ' HCF'):ts2.text('');
+      
      
     });
 
