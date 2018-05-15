@@ -189,8 +189,15 @@ class BarChart extends Component {
             let cloneItem = Object.assign({},item);
             delete cloneItem.year;
             maxValues[item.year]={};
-            maxValues[item.year]['value']=(this.sumValues(cloneItem));
-            maxValues[item.year]['count'] = Object.keys(item).length-1;
+            if (Object.keys(cloneItem).length === 0 && cloneItem.constructor === Object){
+                maxValues[item.year]['value']=0;
+                maxValues[item.year]['count'] = 0;
+            }
+            else{
+                maxValues[item.year]['value']=(this.sumValues(cloneItem));
+                maxValues[item.year]['count'] = Object.keys(item).length-1;
+            }
+
             defaultUsetypes.forEach((usetype,index)=>{
                 if (!Object.keys(cloneItem).includes(usetype)) {
                     item[usetype] = 0;
