@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import Header from './components/Header';
-import Map from './components/Map';
-import Footer from './components/Footer';
+import Header from './Header';
+import Footer from './Footer';
 
-class App extends Component {
+class Home extends Component {
 
   render() {
     // const { names } = this.state;
     return (
       <React.Fragment>
         <Header/>  
-        <Map/>    
+        <div/>    
         <Footer/>  
       </React.Fragment>
       // <div>re</div>
@@ -18,4 +17,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Home;

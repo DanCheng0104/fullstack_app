@@ -227,7 +227,10 @@ class BarChart extends Component {
     return (
         <div className = 'bar_summary'>
             <div className = 'bar' ref={node => this.node = node}></div>
-            <div className = 'summary'></div>
+            <div className = 'summary'>
+                sreolse reoare 
+                <div>reserer</div>
+            </div>
         </div>
       )
     }
