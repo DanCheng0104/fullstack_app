@@ -8,5 +8,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/api/nbs', db.getAllNbs);
 router.get('/api/all', db.getAllData);
+router.get('/api/summary', db.getSummaryInfo);
+
 
 module.exports = router;

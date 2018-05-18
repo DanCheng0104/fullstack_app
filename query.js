@@ -49,10 +49,26 @@ function getAllData(req, res, next) {
     });
 }
 
+function getSummaryInfo(req, res, next){
+  db.any('select geo_id,name,pop,pop_sqmi,med_income,pct_own,pct_rent,year,count,enviroscreen_tracts from summary where year = \'2014\';')
+    .then(function (data) {
+      res.status(200)
+        .json({
+          status: 'success',
+          data: data,
+          message: 'Retrieved ALL data'
+        });
+    })
+    .catch(function (err) {
+      return next(err);
+    });  
+}
+
 
 module.exports = {
     getAllNbs: getAllNbs,
-    getAllData: getAllData
+    getAllData: getAllData,
+    getSummaryInfo: getSummaryInfo
 //   getSinglePuppy: getSinglePuppy,
 //   createPuppy: createPuppy,
 //   updatePuppy: updatePuppy,

@@ -21,6 +21,8 @@ class Map extends React.Component {
         barDisplay: false,
         d3Display:false,
         allData:{},
+        allSummary:{},
+        summary:{},
         chartData : [],
         layerList:['nb-boundary','nb-boundary-masked','nb-boundary-all','nb-boundary-highlight'],
         values:{'Total':'usage', 'Median':'usage_med','Median Per sqft':'usage_med_sqft'},
@@ -56,6 +58,7 @@ class Map extends React.Component {
 
     componentDidMount() {
         this.getAllData();
+        this.getSummaryInfo();
         this.map = new mapboxgl.Map({
             container: this.mapContainer,
             style: 'mapbox://styles/dcheng0104/cjgfnupla000k2rpjeim3qsbl',
@@ -123,7 +126,12 @@ class Map extends React.Component {
                     })
 
                     this.setState({chartData:data});
+                    //put data into summary
+                    const summary = this.state.allSummary.filter(item => item.properties.id ==id);
+                    this.setState({summary:summary[0].properties});
+                    //
                     this.updateD3Display(true);
+
                 }
             });
         });
@@ -149,6 +157,22 @@ class Map extends React.Component {
     getAllUsage=()=>{
         return fetch('api/nbs')
         .then(res => res.json())
+    }
+
+    getSummaryInfo=()=>{
+        fetch('api/summary')
+        .then(res => res.json())
+        .then(data => {
+            let results = {};
+            results["features"] = [];
+            data.data.forEach(geo=>{
+                let feature = {};
+                //geo_id,name,pop,pop_sqmi,med_income,pct_own,pct_rent,year,count,enviroscreen_tracts
+                feature.properties = {"name":geo.name,"id":geo.geo_id,"pop":Number(geo.pop),"pop_sqmi":Number(geo.pop_sqmi),"med_income":Number(geo.med_income),"usage_med_sqft":Number(geo.usage_med_sqft),"pct_own":geo.pct_own,"pct_rent":geo.pct_rent,"enviroscreen_tracts":parseInt(geo.enviroscreen_tracts)};
+                results.features.push(feature);
+            })
+            this.setState({ allSummary:results.features })
+        });
     }
 
     getAllData=()=>{
@@ -179,7 +203,7 @@ class Map extends React.Component {
             {loading}
             <Bar usetypes={Object.keys(this.state.usetypes)} values={Object.keys(this.state.values)} updateValue={this.updateValue} updateUsetype={this.updateUsetype}/>
             <Legend year ={this.state.year} updateYear={this.updateYear} usetype={this.state.usetype} value={this.state.value}/> 
-            <PanelPart barDisplay={this.state.barDisplay} d3Display={this.state.d3Display} updateD3Display={this.updateD3Display} updateBar={this.updateBar} ref={this.panelContainer} chartData={this.state.chartData} usetype = {this.state.usetype} value = {this.state.value}/>
+            <PanelPart barDisplay={this.state.barDisplay} d3Display={this.state.d3Display} updateD3Display={this.updateD3Display} updateBar={this.updateBar} ref={this.panelContainer} summary={this.state.summary} chartData={this.state.chartData} usetype = {this.state.usetype} value = {this.state.value}/>
         </div>
 
       )
