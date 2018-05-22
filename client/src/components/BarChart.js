@@ -223,13 +223,40 @@ class BarChart extends Component {
 
     return data;
    }
+
+ jsUcfirst =(string)=> {
+    const items = string.split(' ');
+    let result = '';
+    items.forEach(item=>{
+        result = result + item.charAt(0).toUpperCase() + item.slice(1)+' ';
+    })
+    return result;
+ }
     
    render() {
+    const name = typeof this.props.summary.name !== 'undefined' ?this.jsUcfirst(this.props.summary.name):'';
+    
     return (
         <div className = 'bar_summary'>
             <div className = 'bar' ref={node => this.node = node}></div>
             <div className = 'summary'>
-            {this.props.summary.name}
+             <div className= 'summaryTitle'>Summary</div>
+             <div className= 'summaryDetail'>
+                 <span>
+                     <span>{name}</span>
+                     <span>Neighborhood:</span>
+                 </span>
+                 <span>
+                     <span>{this.props.summary.med_income}</span>
+                     <span>Median Household Income (2014)</span>
+                 </span>
+                 <span>
+                     <span>{this.props.summary.pop}</span>
+                     <span>Total Population (2014)</span>
+                 </span>
+             </div>
+             
+
             </div>
         </div>
       )
