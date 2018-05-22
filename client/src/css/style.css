@@ -35,6 +35,36 @@ grid-row:1;
   border-bottom: 2px solid #002874;	
   color: #002874;	
 }
+/* home page */
+.home{
+  background-image:url(../images/image1.jpg);
+  background-size:cover;
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  /* align-items: center; */
+}
+.news{
+  grid-column: 2;
+  grid-row:2;
+  background-color: rgba(175, 171, 171, 0.3);
+  color:black;
+  /* align-self: center; */
+  position: relative;
+  text-align: center;
+}
+
+.news span{
+  position: absolute;
+  left: 50%;
+  right:-30%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: Overpass,sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 600;
+  font-size: 1.7rem;
+}
 
 /* legend */
 .legend {

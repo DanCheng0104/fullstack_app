@@ -9,8 +9,7 @@ import { select } from 'd3-selection';
 class BarChart extends Component {
 
    componentDidMount() {
-    window.addEventListener("resize", this.createBarChart);    
-    console.log(this.props.summary);  
+    window.addEventListener("resize", this.createBarChart);      
    }
 
    componentDidUpdate() {
@@ -229,7 +228,6 @@ class BarChart extends Component {
         <div className = 'bar_summary'>
             <div className = 'bar' ref={node => this.node = node}></div>
             <div className = 'summary'>
-            {this.props.summary.name}
             </div>
         </div>
       )
