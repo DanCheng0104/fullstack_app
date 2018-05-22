@@ -167,6 +167,20 @@ grid-column:1/1;
 }
 .summary {
 grid-column:2/2;
+font-family: Overpass,sans-serif;
+}
+.summaryTitle{
+  width: 100%;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  color:#000;
+  font-weight: 400;
+}
+.summaryDetail{
+  display:grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: repeat(3,1fr);
+  grid-column-gap: 8px;
 }
 
 text {
