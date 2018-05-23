@@ -239,8 +239,6 @@ class BarChart extends Component {
         <div className = 'bar_summary'>
             <div className = 'bar' ref={node => this.node = node}></div>
             <div className = 'summary'>
-<<<<<<< HEAD
-=======
              <div className= 'summaryTitle'>Summary</div>
              <div className= 'summaryDetail'>
                  <span>
@@ -258,7 +256,6 @@ class BarChart extends Component {
              </div>
              
 
->>>>>>> 5e6cfd8ba60410c9c54b8faa0f62648382497195
             </div>
         </div>
       )
