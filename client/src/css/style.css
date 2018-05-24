@@ -96,20 +96,30 @@ grid-row:1;
   }
 }
 
-
 /* news page */
 .newspage {
   background-color:#f7f2f2;
   display:grid;
   grid-template-columns: 1fr 2fr 1fr;
-  grid-template-rows:50px 1fr;
+  grid-template-rows:50px 0.5fr 0.5fr 0.5fr 0.5fr 1.2fr 1.1fr 0.5fr 0.5fr 0.5fr 0.5fr 20px;
+  grid-row-gap: 2rem;
+  color:#797272;
 }
-
+.newspage .space{
+  grid-column: 2/2; 
+}
 .newspage .intro{
   grid-column: 2/2;
-  grid-row:2/2;
+    
 }
-
+.newspage .item{
+  grid-column: 2/2; 
+}
+.newspage .item .context_m{
+  border-left-color: #cccccc;
+  border-left: 2px solid; 
+  padding-left:20px;
+}
 /* legend */
 .legend {
 display: grid;
