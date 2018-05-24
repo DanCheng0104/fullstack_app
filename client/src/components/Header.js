@@ -8,7 +8,7 @@ class Header extends Component {
     return (
       <section className="nav-menu">
           <a href="/">Home</a>
-          <a href="#">Method</a>
+          <a href="/news">News</a>
           <a href="/dwp">LADWP</a>
           <a href="#">Other2</a>
 
